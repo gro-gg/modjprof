@@ -6,9 +6,25 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>The parent project for the modular java profiler (modjprodf)</description>
+
 	<modules>
 		<module>modjprof-agent</module>
 	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.asm>5.0.4</version.asm>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-all</artifactId>
+				<version>${version.asm}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
@@ -24,16 +40,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.asdf>1</version.asdf>
-	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-		</dependencies>
-	</dependencyManagement>
 
 </project>
 
