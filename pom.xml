@@ -14,15 +14,26 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.asm>5.0.4</version.asm>
+		<version.junit>4.12</version.junit>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- compile dependencies available in all classpaths -->
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm-all</artifactId>
 				<version>${version.asm}</version>
 			</dependency>
+			
+			<!-- dependencies only used in unit tests -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 

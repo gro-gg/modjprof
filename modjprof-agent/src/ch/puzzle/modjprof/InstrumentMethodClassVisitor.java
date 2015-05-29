@@ -17,9 +17,8 @@ public class InstrumentMethodClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String methodName, String desc, String signature, String[] exceptions) {
         MethodVisitor parentMethodVisitor = super.visitMethod(access, methodName, desc, signature, exceptions);
         if (!methodName.equals("<init>")) {
-            // System.out.println("   instrumenting method " + methodName);
             MethodVisitor instrumentMeasurementPonitsMethodVisitor = new InstrumentMeasurementPonitsMethodVisitor(
-                    parentMethodVisitor, methodName, className);
+                    parentMethodVisitor, className, methodName, desc);
             return instrumentMeasurementPonitsMethodVisitor;
         }
         return parentMethodVisitor;
