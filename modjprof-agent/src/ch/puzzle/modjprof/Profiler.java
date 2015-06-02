@@ -8,22 +8,20 @@ import java.lang.instrument.Instrumentation;
 
 public class Profiler {
 
-	private static PrintWriter writer;
+    private static PrintWriter writer;
 
-	public static void premain(String agentArgs, Instrumentation inst)
-			throws IOException {
-        writer = new PrintWriter(new FileWriter(new File("/tmp/profiler.trc")),
-				true);
-		inst.addTransformer(new ASMClassFileTransformer());
-	}
+    public static void premain(String agentArgs, Instrumentation inst) throws IOException {
+        writer = new PrintWriter(new FileWriter(new File("/tmp/profiler.trc")), true);
+        inst.addTransformer(new ASMClassFileTransformer());
+    }
 
-	public static void notifyEnterMethod(String methodSignature) {
+    public static void notifyEnterMethod(String methodSignature) {
         writer.println("> " + getMilliString() + " " + methodSignature);
-	}
+    }
 
     public static void notifyExitMethod() {
         writer.println("< " + getMilliString());
-	}
+    }
 
     private static String getMilliString() {
         long nanoTime = System.nanoTime();

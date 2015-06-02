@@ -1,15 +1,16 @@
 package ch.puzzle.modjprof;
 
+import static org.objectweb.asm.Opcodes.ASM5;
+
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 public class InstrumentMethodClassVisitor extends ClassVisitor {
 
     private String className;
 
     public InstrumentMethodClassVisitor(ClassVisitor classVisitor, String className) {
-        super(Opcodes.ASM5, classVisitor);
+        super(ASM5, classVisitor);
         this.className = className;
     }
 
