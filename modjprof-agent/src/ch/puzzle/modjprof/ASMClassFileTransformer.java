@@ -15,6 +15,11 @@ import org.objectweb.asm.ClassWriter;
 
 public class ASMClassFileTransformer implements ClassFileTransformer {
 
+    static {
+        System.err.println("*** ASMClassFileTransformer loaded by "
+                + ASMClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
+    }
+
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {

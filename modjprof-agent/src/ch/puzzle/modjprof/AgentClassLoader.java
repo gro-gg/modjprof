@@ -2,6 +2,11 @@ package ch.puzzle.modjprof;
 
 public class AgentClassLoader extends ClassLoader {
 
+    static {
+        System.err
+                .println("*** AgentClassLoader loaded by " + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
+    }
+
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (name.startsWith("java.") || name.startsWith("javax.")) {
@@ -34,6 +39,8 @@ public class AgentClassLoader extends ClassLoader {
             if (resolve) {
                 resolveClass(c);
             }
+
+            System.err.println("===> class " + name + " loaded with AgentClassLoader");
 
             return c;
         }

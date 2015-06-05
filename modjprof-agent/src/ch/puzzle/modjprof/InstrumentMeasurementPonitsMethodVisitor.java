@@ -10,6 +10,11 @@ import org.objectweb.asm.MethodVisitor;
 
 public class InstrumentMeasurementPonitsMethodVisitor extends MethodVisitor {
 
+    static {
+        System.err.println("*** InstrumentMeasurementPonitsMethodVisitor loaded by "
+                + InstrumentMeasurementPonitsMethodVisitor.class.getClassLoader().getClass().getSimpleName());
+    }
+
     private String methodName;
     private String className;
     private String methodDescriptor;

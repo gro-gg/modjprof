@@ -9,6 +9,10 @@ import java.lang.reflect.Constructor;
 
 public class Profiler {
 
+    static {
+        System.err.println("*** Profiler loaded by " + Profiler.class.getClassLoader().getClass().getSimpleName());
+    }
+
     private static PrintWriter writer;
 
     private static ClassLoader agentClassLoader;
