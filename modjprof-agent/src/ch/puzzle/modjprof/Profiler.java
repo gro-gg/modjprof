@@ -19,10 +19,10 @@ public class Profiler {
     public static void premain(String agentArgs, Instrumentation inst) throws Exception {
         writer = new PrintWriter(new FileWriter(new File("/tmp/profiler.trc")), true);
 
-        agentClassLoader = (ClassLoader) Class.forName("ch.puzzle.modjprof.AgentClassLoader").newInstance();
+        agentClassLoader = (ClassLoader) Class.forName("ch.puzzle.modjprof.classloader.AgentClassLoader").newInstance();
         ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(agentClassLoader);
-        Class<?> cls = agentClassLoader.loadClass("ch.puzzle.modjprof.ASMClassFileTransformer");
+        Class<?> cls = agentClassLoader.loadClass("ch.puzzle.modjprof.instrumentation.ASMClassFileTransformer");
 
         ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor().newInstance();
         inst.addTransformer(classFileTransformer);

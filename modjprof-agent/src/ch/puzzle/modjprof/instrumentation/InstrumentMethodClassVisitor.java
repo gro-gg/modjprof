@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.instrumentation;
 
 import static org.objectweb.asm.Opcodes.ASM5;
 

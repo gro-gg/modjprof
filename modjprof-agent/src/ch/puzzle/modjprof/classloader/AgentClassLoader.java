@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.classloader;
 
 import java.io.IOException;
 import java.net.URL;
