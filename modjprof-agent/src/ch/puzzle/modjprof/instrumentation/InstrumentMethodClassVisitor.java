@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.instrumentation;
 
 import static org.objectweb.asm.Opcodes.ASM5;
 
@@ -6,6 +6,11 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 public class InstrumentMethodClassVisitor extends ClassVisitor {
+
+    static {
+        System.err.println("*** InstrumentMethodClassVisitor loaded by "
+                + InstrumentMethodClassVisitor.class.getClassLoader().getClass().getSimpleName());
+    }
 
     private String className;
 

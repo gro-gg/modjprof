@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.instrumentation;
 
 import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.ATHROW;
@@ -9,6 +9,11 @@ import static org.objectweb.asm.Opcodes.RETURN;
 import org.objectweb.asm.MethodVisitor;
 
 public class InstrumentMeasurementPonitsMethodVisitor extends MethodVisitor {
+
+    static {
+        System.err.println("*** InstrumentMeasurementPonitsMethodVisitor loaded by "
+                + InstrumentMeasurementPonitsMethodVisitor.class.getClassLoader().getClass().getSimpleName());
+    }
 
     private String methodName;
     private String className;

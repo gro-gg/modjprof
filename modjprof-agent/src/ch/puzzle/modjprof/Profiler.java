@@ -2,17 +2,32 @@ package ch.puzzle.modjprof;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 
 public class Profiler {
 
+    static {
+        System.err.println("*** Profiler loaded by " + Profiler.class.getClassLoader().getClass().getSimpleName());
+    }
+
     private static PrintWriter writer;
 
-    public static void premain(String agentArgs, Instrumentation inst) throws IOException {
+    private static ClassLoader agentClassLoader;
+
+    public static void premain(String agentArgs, Instrumentation inst) throws Exception {
         writer = new PrintWriter(new FileWriter(new File("/tmp/profiler.trc")), true);
-        inst.addTransformer(new ASMClassFileTransformer());
+
+        agentClassLoader = (ClassLoader) Class.forName("ch.puzzle.modjprof.classloader.AgentClassLoader").newInstance();
+        ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(agentClassLoader);
+        Class<?> cls = agentClassLoader.loadClass("ch.puzzle.modjprof.instrumentation.ASMClassFileTransformer");
+
+        ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor().newInstance();
+        inst.addTransformer(classFileTransformer);
+
+        Thread.currentThread().setContextClassLoader(previousClassLoader);
     }
 
     public static void notifyEnterMethod(String methodSignature) {

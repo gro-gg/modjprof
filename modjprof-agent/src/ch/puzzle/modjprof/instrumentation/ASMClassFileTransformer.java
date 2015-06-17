@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.instrumentation;
 
 import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.Opcodes.ACC_ANNOTATION;
@@ -14,6 +14,11 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 public class ASMClassFileTransformer implements ClassFileTransformer {
+
+    static {
+        System.err.println("*** ASMClassFileTransformer loaded by "
+                + ASMClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
+    }
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
