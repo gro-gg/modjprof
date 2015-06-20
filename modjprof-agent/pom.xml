@@ -23,17 +23,8 @@
 	</dependencies>
 
 	<build>
-<!-- 		<sourceDirectory>src</sourceDirectory> -->
-<!-- 		<resources> -->
-<!-- 			<resource> -->
-<!-- 				<directory>src</directory> -->
-<!-- 				<excludes> -->
-<!-- 					<exclude>**/*.java</exclude> -->
-<!-- 				</excludes> -->
-<!-- 			</resource> -->
-<!-- 		</resources> -->
-
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -62,6 +53,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
 

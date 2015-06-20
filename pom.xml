@@ -13,6 +13,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.java>1.8</version.java>
+		<version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
+		<version.maven-failsafe-plugin>2.18.1</version.maven-failsafe-plugin>
 		<version.asm>5.0.4</version.asm>
 		<version.junit>4.12</version.junit>
 	</properties>
@@ -40,14 +43,22 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+			
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>${version.maven-compiler-plugin}</version>
 					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
+						<source>${version.java}</source>
+						<target>${version.java}</target>
 					</configuration>
 				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${version.maven-failsafe-plugin}</version>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
 	</build>
