@@ -27,7 +27,7 @@ public class ASMClassFileTransformer implements ClassFileTransformer {
         if (className.startsWith("ch/puzzle") || className.startsWith("najs")) {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
-                ClassWriter classWriter = new ClassWriter(classReader, COMPUTE_FRAMES);
+                ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
                 ClassVisitor instrumentMethodClassVisitor = new InstrumentMethodClassVisitor(classWriter, className);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
                     classReader.accept(instrumentMethodClassVisitor, 0);
