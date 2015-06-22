@@ -50,7 +50,7 @@ public class InstrumentationIT {
 
     private List<String> buildCommandLine(String[] args) throws IOException {
         File jar = new File(APPLICATION_JAR);
-        List<String> command = new ArrayList<>();
+        List<String> command = new ArrayList<String>();
         command.add("java");
         command.add("-javaagent:" + AGENT_JAR);
         command.add("-jar");
