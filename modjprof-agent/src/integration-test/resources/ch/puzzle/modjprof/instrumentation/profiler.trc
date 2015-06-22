@@ -1,0 +1,38 @@
+> 242888835.220591 Lch/puzzle/sample/ClassUnderTest; main ([Ljava/lang/String;)V
+> 242888836.630997 Lch/puzzle/sample/ClassA; run ()V
+> 242888837.554866 Lch/puzzle/sample/AbstractClassB; concreteMethodInAbstractClass ()V
+< 242888837.627112
+> 242888837.653306 Lch/puzzle/sample/ClassB; run ()V
+> 242888838.124185 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888838.178227
+< 242888838.217232
+> 242888838.236159 Lch/puzzle/sample/ClassB; run ()V
+> 242888838.273337 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888838.316332
+< 242888838.350645
+> 242888838.367344 Lch/puzzle/sample/AbstractClassB; concreteMethodInAbstractClass ()V
+< 242888838.403694
+> 242888838.420283 Lch/puzzle/sample/ClassB; run ()V
+> 242888838.454377 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888838.495449
+< 242888838.533451
+< 242888838.999962
+> 242888839.018329 Lch/puzzle/sample/ClassA; run ()V
+> 242888839.061518 Lch/puzzle/sample/AbstractClassB; concreteMethodInAbstractClass ()V
+< 242888839.099901
+> 242888839.121521 Lch/puzzle/sample/ClassB; run ()V
+> 242888839.161124 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888839.197301
+< 242888839.230839
+> 242888839.247130 Lch/puzzle/sample/ClassB; run ()V
+> 242888839.280668 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888839.315065
+< 242888839.348028
+> 242888839.368530 Lch/puzzle/sample/AbstractClassB; concreteMethodInAbstractClass ()V
+< 242888839.406255
+> 242888839.426793 Lch/puzzle/sample/ClassB; run ()V
+> 242888839.460212 Lch/puzzle/sample/ClassC; run (Ljava/lang/String;IJ)Ljava/lang/String;
+< 242888839.499353
+< 242888839.535039
+< 242888839.570497
+< 242888839.588753
