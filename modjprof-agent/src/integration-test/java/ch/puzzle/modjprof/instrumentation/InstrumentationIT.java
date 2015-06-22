@@ -17,6 +17,7 @@ import org.junit.Test;
 
 public class InstrumentationIT {
 
+    private static final boolean printOutput = false;
     private static final String RESULT_TRC_FILE = "/tmp/profiler.trc";
     private static final String EXPECTED_TRC_FILE = "ch/puzzle/modjprof/instrumentation/profiler.trc";
     private static final String VERSION = "0.0.1-SNAPSHOT";
@@ -39,9 +40,10 @@ public class InstrumentationIT {
 
     private int execute(String[] args) throws IOException, InterruptedException {
         ProcessBuilder pb = new ProcessBuilder(buildCommandLine(args));
-        // pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
-
+        if (printOutput) {
+            pb.redirectOutput(Redirect.INHERIT);
+            pb.redirectError(Redirect.INHERIT);
+        }
         Process p = pb.start();
         return p.waitFor();
     }
