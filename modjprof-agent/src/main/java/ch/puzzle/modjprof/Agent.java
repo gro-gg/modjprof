@@ -8,10 +8,11 @@ import java.lang.instrument.Instrumentation;
 
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
 
-public class Profiler {
+public class Agent {
 
     static {
-        System.err.println("*** Profiler loaded by " + Profiler.class.getClassLoader().getClass().getSimpleName());
+        System.err.println("*** " + Agent.class.getSimpleName() + " loaded by "
+                + Agent.class.getClassLoader().getClass().getSimpleName());
     }
 
     private static PrintWriter writer;

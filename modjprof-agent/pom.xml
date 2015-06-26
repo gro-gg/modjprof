@@ -56,11 +56,11 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>ch.puzzle.modjprof.Profiler</mainClass>
+									<mainClass>ch.puzzle.modjprof.Agent</mainClass>
 								</manifest>
 								<manifestEntries>
-									<Premain-Class>ch.puzzle.modjprof.Profiler</Premain-Class>
-									<Agent-Class>ch.puzzle.modjprof.Profiler</Agent-Class>
+									<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
+									<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
 									<Can-Redefine-Classes>true</Can-Redefine-Classes>
 									<Can-Retransform-Classes>true</Can-Retransform-Classes>
 								</manifestEntries>

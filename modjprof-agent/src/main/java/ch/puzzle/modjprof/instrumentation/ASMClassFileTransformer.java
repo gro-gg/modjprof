@@ -16,7 +16,7 @@ import org.objectweb.asm.ClassWriter;
 public class ASMClassFileTransformer implements ClassFileTransformer {
 
     static {
-        System.err.println("*** ASMClassFileTransformer loaded by "
+        System.err.println("*** " + ASMClassFileTransformer.class.getSimpleName() + " loaded by "
                 + ASMClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
     }
 
@@ -28,7 +28,7 @@ public class ASMClassFileTransformer implements ClassFileTransformer {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
                 ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
-                ClassVisitor instrumentMethodClassVisitor = new InstrumentMethodClassVisitor(classWriter, className);
+                ClassVisitor instrumentMethodClassVisitor = new MethodSelectorClassVisitor(classWriter, className);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
                     classReader.accept(instrumentMethodClassVisitor, 0);
                     return classWriter.toByteArray();

@@ -8,18 +8,18 @@ import static org.objectweb.asm.Opcodes.RETURN;
 
 import org.objectweb.asm.MethodVisitor;
 
-public class InstrumentMeasurementPonitsMethodVisitor extends MethodVisitor {
+public class InstrumentationMethodVisitor extends MethodVisitor {
 
     static {
-        System.err.println("*** InstrumentMeasurementPonitsMethodVisitor loaded by "
-                + InstrumentMeasurementPonitsMethodVisitor.class.getClassLoader().getClass().getSimpleName());
+        System.err.println("*** " + InstrumentationMethodVisitor.class.getSimpleName() + " loaded by "
+                + InstrumentationMethodVisitor.class.getClassLoader().getClass().getSimpleName());
     }
 
     private String methodName;
     private String className;
     private String methodDescriptor;
 
-    public InstrumentMeasurementPonitsMethodVisitor(MethodVisitor methodVisitor, String className, String methodName,
+    public InstrumentationMethodVisitor(MethodVisitor methodVisitor, String className, String methodName,
             String methodDescriptor) {
         super(ASM5, methodVisitor);
         this.methodName = methodName;
@@ -31,13 +31,13 @@ public class InstrumentMeasurementPonitsMethodVisitor extends MethodVisitor {
     public void visitCode() {
         super.visitCode();
         mv.visitLdcInsn("L" + className + "; " + methodName + " " + methodDescriptor);
-        mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Profiler", "notifyEnterMethod", "(Ljava/lang/String;)V", false);
+        mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Agent", "notifyEnterMethod", "(Ljava/lang/String;)V", false);
     }
 
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Profiler", "notifyExitMethod", "()V", false);
+            mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Agent", "notifyExitMethod", "()V", false);
         }
         super.visitInsn(opcode);
     }

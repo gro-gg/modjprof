@@ -49,12 +49,13 @@ public class InstrumentationIT {
     }
 
     private List<String> buildCommandLine(String[] args) throws IOException {
-        File jar = new File(APPLICATION_JAR);
+        File applicationJar = new File(APPLICATION_JAR);
+        File agentJar = new File(AGENT_JAR);
         List<String> command = new ArrayList<String>();
         command.add("java");
-        command.add("-javaagent:" + AGENT_JAR);
+        command.add("-javaagent:" + agentJar.getCanonicalPath());
         command.add("-jar");
-        command.add(jar.getCanonicalPath());
+        command.add(applicationJar.getCanonicalPath());
         command.addAll(Arrays.asList(args));
         return command;
     }
