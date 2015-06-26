@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 
+import ch.puzzle.modjprof.classloader.AgentClassLoader;
+
 public class Profiler {
 
     static {
@@ -19,7 +21,7 @@ public class Profiler {
     public static void premain(String agentArgs, Instrumentation inst) throws Exception {
         writer = new PrintWriter(new FileWriter(new File("/tmp/profiler.trc")), true);
 
-        agentClassLoader = (ClassLoader) Class.forName("ch.puzzle.modjprof.classloader.AgentClassLoader").newInstance();
+        agentClassLoader = new AgentClassLoader();
         ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(agentClassLoader);
         Class<?> cls = agentClassLoader.loadClass("ch.puzzle.modjprof.instrumentation.ASMClassFileTransformer");
