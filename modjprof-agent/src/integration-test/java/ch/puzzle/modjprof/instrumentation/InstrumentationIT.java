@@ -18,7 +18,7 @@ import org.junit.Test;
 public class InstrumentationIT {
 
     private static final boolean printOutput = false;
-    private static final String RESULT_TRC_FILE = "/tmp/profiler.trc";
+    private static final String RESULT_TRC_FILE = "/tmp/modjprof_%d.trc";
     private static final String EXPECTED_TRC_FILE = "ch/puzzle/modjprof/instrumentation/profiler.trc";
     private static final String VERSION = "0.0.1-SNAPSHOT";
     private static final String AGENT_JAR = "target/modjprodf-agent-" + VERSION + "-jar-with-dependencies.jar";
@@ -28,9 +28,10 @@ public class InstrumentationIT {
     public void testExecute() throws IOException, InterruptedException {
         assertThat(execute(new String[] {}), is(equalTo(0)));
 
+        long threadId = Thread.currentThread().getId();
         File file = new File(getClass().getClassLoader().getResource(EXPECTED_TRC_FILE).getFile());
         List<String> expectedLines = FileUtils.readLines(file);
-        List<String> resultLines = FileUtils.readLines(new File(RESULT_TRC_FILE), Charsets.UTF_8);
+        List<String> resultLines = FileUtils.readLines(new File(String.format(RESULT_TRC_FILE, threadId)), Charsets.UTF_8);
 
         assertThat(expectedLines.size(), is(equalTo(resultLines.size())));
         for (int i = 0; i < expectedLines.size(); i++) {
