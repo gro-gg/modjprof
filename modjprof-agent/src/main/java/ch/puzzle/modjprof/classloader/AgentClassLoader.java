@@ -1,29 +1,50 @@
 package ch.puzzle.modjprof.classloader;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+import java.util.Properties;
 
 public class AgentClassLoader extends URLClassLoader {
 
     static {
-        System.err
-        .println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
+        System.err.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
                 + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
     }
 
-    public AgentClassLoader() throws MalformedURLException {
+    public AgentClassLoader() {
         // set the parent class loader
         super(new URL[] {}, AgentClassLoader.class.getClassLoader());
 
         // add this jar to search path
-        addURL(AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation());
+        URL jarUrl = AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation();
+        addURL(jarUrl);
 
         // add all dependencies
-        addURL(new URL("file:/home/philipp/git/masterthesis/modjprof/modjprof-agent/target/asm-5.0.4.jar"));
+        try {
+            if (jarUrl.getProtocol().equals("file") && jarUrl.toString().endsWith(".jar")) {
+                jarUrl = new URL("jar:" + jarUrl.toString() + "!/");
+            }
+            JarURLConnection urlConnection = (JarURLConnection) jarUrl.openConnection();
+            File parentDirectory = new File(urlConnection.getJarFileURL().getPath()).getParentFile();
 
+            Properties classpathProperties = new Properties();
+            classpathProperties.load(new URL(jarUrl, "/classpath.properties").openStream());
+            String[] classPath = ((String) classpathProperties.get("classpath")).split(":");
+
+            for (String file : classPath) {
+                addURL(new File(parentDirectory, file).toURI().toURL());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot build classpath", e);
+        }
+
+        for (URL url : getURLs()) {
+            System.err.println("loading jar: " + url);
+        }
     }
 
     @Override
