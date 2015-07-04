@@ -1,6 +1,5 @@
 package ch.puzzle.modjprof.classloader;
 
-import static ch.puzzle.modjprof.TestConstants.AGENT_JAR;
 import static ch.puzzle.modjprof.TestConstants.APPLICATION_JAR;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -31,7 +30,7 @@ public class ClassLoaderIT extends BaseIntegrationTest {
         }
 
         assertThat(classLoadedFrom.size(), is(2));
-        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, APPLICATION_JAR));
+        assertThat(classLoadedFrom, containsInAnyOrder("asm-5.0.4.jar", APPLICATION_JAR));
     }
 
     private String extractJarName(String line) {

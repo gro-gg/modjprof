@@ -43,32 +43,47 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>ch.puzzle.modjprof.Agent</mainClass>
-								</manifest>
-								<manifestEntries>
-									<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
-									<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
-									<Can-Redefine-Classes>true</Can-Redefine-Classes>
-									<Can-Retransform-Classes>true</Can-Retransform-Classes>
-								</manifestEntries>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
+							<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
+							<Can-Redefine-Classes>true</Can-Redefine-Classes>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
+
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-assembly-plugin</artifactId> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>attached</goal> -->
+<!-- 						</goals> -->
+<!-- 						<phase>package</phase> -->
+<!-- 						<configuration> -->
+<!-- 							<descriptorRefs> -->
+<!-- 								<descriptorRef>jar-with-dependencies</descriptorRef> -->
+<!-- 							</descriptorRefs> -->
+<!-- 							<archive> -->
+<!-- 								<manifest> -->
+<!-- 									<mainClass>ch.puzzle.modjprof.Agent</mainClass> -->
+<!-- 								</manifest> -->
+<!-- 								<manifestEntries> -->
+<!-- 									<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class> -->
+<!-- 									<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class> -->
+<!-- 									<Can-Redefine-Classes>true</Can-Redefine-Classes> -->
+<!-- 									<Can-Retransform-Classes>true</Can-Retransform-Classes> -->
+<!-- 								</manifestEntries> -->
+<!-- 							</archive> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

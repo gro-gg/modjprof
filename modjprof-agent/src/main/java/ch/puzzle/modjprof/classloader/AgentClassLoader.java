@@ -1,6 +1,7 @@
 package ch.puzzle.modjprof.classloader;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -9,13 +10,15 @@ public class AgentClassLoader extends URLClassLoader {
 
     static {
         System.err
-.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
+        .println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
                 + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
     }
 
-    public AgentClassLoader() {
+    public AgentClassLoader() throws MalformedURLException {
         // set the parent class loader and add this jar to search path
-        super(new URL[] { AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation() }, AgentClassLoader.class
+        super(new URL[] { AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation(),
+                new URL("file:/home/philipp/git/masterthesis/modjprof/modjprof-agent/target/asm-5.0.4.jar") },
+                AgentClassLoader.class
                 .getClassLoader());
     }
 
