@@ -6,7 +6,7 @@ public class TestConstants {
 
     public static final String AGENT_JAR = "modjprodf-agent-" + VERSION + "-jar-with-dependencies.jar";
 
-    public static final String APPLICATION_JAR = "sample-application-" + VERSION + ".jar";
+    public static final String APPLICATION_JAR = "sample-application-" + VERSION + "-jar-with-dependencies.jar";
 
     public static final String AGENT_JAR_LOCATION = "target/" + AGENT_JAR;
 

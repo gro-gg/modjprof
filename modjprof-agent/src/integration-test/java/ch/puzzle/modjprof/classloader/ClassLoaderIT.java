@@ -1,6 +1,7 @@
 package ch.puzzle.modjprof.classloader;
 
 import static ch.puzzle.modjprof.TestConstants.AGENT_JAR;
+import static ch.puzzle.modjprof.TestConstants.APPLICATION_JAR;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -15,7 +16,6 @@ import java.util.List;
 import org.junit.Test;
 
 import ch.puzzle.modjprof.BaseIntegrationTest;
-import ch.puzzle.modjprof.TestConstants;
 
 public class ClassLoaderIT extends BaseIntegrationTest {
 
@@ -30,14 +30,8 @@ public class ClassLoaderIT extends BaseIntegrationTest {
             }
         }
 
-        //        for (String jar : classLoadedFrom) {
-        //            System.err.println(jar);
-        //        }
-
         assertThat(classLoadedFrom.size(), is(2));
-        // TODO: add APPLICATION_JAR
-        //        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, TestConstants.APPLICATION_JAR));
-        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, TestConstants.AGENT_JAR));
+        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, APPLICATION_JAR));
     }
 
     private String extractJarName(String line) {
