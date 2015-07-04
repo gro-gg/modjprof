@@ -5,16 +5,16 @@ import static org.objectweb.asm.Opcodes.ASM5;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-public class InstrumentMethodClassVisitor extends ClassVisitor {
+public class MethodSelectorClassVisitor extends ClassVisitor {
 
     static {
-        System.err.println("*** InstrumentMethodClassVisitor loaded by "
-                + InstrumentMethodClassVisitor.class.getClassLoader().getClass().getSimpleName());
+        System.err.println("*** " + MethodSelectorClassVisitor.class.getSimpleName() + " loaded by "
+                + MethodSelectorClassVisitor.class.getClassLoader().getClass().getSimpleName());
     }
 
     private String className;
 
-    public InstrumentMethodClassVisitor(ClassVisitor classVisitor, String className) {
+    public MethodSelectorClassVisitor(ClassVisitor classVisitor, String className) {
         super(ASM5, classVisitor);
         this.className = className;
     }
@@ -23,7 +23,7 @@ public class InstrumentMethodClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String methodName, String desc, String signature, String[] exceptions) {
         MethodVisitor parentMethodVisitor = super.visitMethod(access, methodName, desc, signature, exceptions);
         if (!methodName.equals("<init>")) {
-            MethodVisitor instrumentMeasurementPonitsMethodVisitor = new InstrumentMeasurementPonitsMethodVisitor(
+            MethodVisitor instrumentMeasurementPonitsMethodVisitor = new InstrumentationMethodVisitor(
                     parentMethodVisitor, className, methodName, desc);
             return instrumentMeasurementPonitsMethodVisitor;
         }

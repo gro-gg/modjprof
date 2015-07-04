@@ -9,7 +9,8 @@ public class AgentClassLoader extends URLClassLoader {
 
     static {
         System.err
-                .println("*** AgentClassLoader loaded by " + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
+.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
+                + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
     }
 
     public AgentClassLoader() {
