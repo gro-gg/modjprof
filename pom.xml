@@ -8,8 +8,8 @@
 	<description>The parent project for the modular java profiler (modjprodf)</description>
 
 	<modules>
-		<module>modjprof-agent</module>
 		<module>sample-application</module>
+		<module>modjprof-agent</module>
 	</modules>
 
 	<properties>
@@ -30,7 +30,7 @@
 			<!-- compile dependencies available in all classpaths -->
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm-all</artifactId>
+				<artifactId>asm</artifactId>
 				<version>${version.asm}</version>
 			</dependency>
 
