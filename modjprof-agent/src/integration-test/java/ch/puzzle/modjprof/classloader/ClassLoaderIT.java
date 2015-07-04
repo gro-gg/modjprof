@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Test;
 
 import ch.puzzle.modjprof.BaseIntegrationTest;
+import ch.puzzle.modjprof.TestConstants;
 
 public class ClassLoaderIT extends BaseIntegrationTest {
 
@@ -29,10 +30,14 @@ public class ClassLoaderIT extends BaseIntegrationTest {
             }
         }
 
-        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR));
+        //        for (String jar : classLoadedFrom) {
+        //            System.err.println(jar);
+        //        }
+
+        assertThat(classLoadedFrom.size(), is(2));
         // TODO: add APPLICATION_JAR
-        assertThat(classLoadedFrom.size(), is(1));
-        // assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, TestConstants.APPLICATION_JAR));
+        //        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, TestConstants.APPLICATION_JAR));
+        assertThat(classLoadedFrom, containsInAnyOrder(AGENT_JAR, TestConstants.AGENT_JAR));
     }
 
     private String extractJarName(String line) {

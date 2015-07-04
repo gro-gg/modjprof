@@ -8,6 +8,14 @@
 		<artifactId>modjprodf-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>4.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -24,6 +32,29 @@
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>ch.puzzle.sample.ClassUnderTest</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
