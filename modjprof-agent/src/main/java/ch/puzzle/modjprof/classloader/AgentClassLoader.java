@@ -15,11 +15,15 @@ public class AgentClassLoader extends URLClassLoader {
     }
 
     public AgentClassLoader() throws MalformedURLException {
-        // set the parent class loader and add this jar to search path
-        super(new URL[] { AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation(),
-                new URL("file:/home/philipp/git/masterthesis/modjprof/modjprof-agent/target/asm-5.0.4.jar") },
-                AgentClassLoader.class
-                .getClassLoader());
+        // set the parent class loader
+        super(new URL[] {}, AgentClassLoader.class.getClassLoader());
+
+        // add this jar to search path
+        addURL(AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation());
+
+        // add all dependencies
+        addURL(new URL("file:/home/philipp/git/masterthesis/modjprof/modjprof-agent/target/asm-5.0.4.jar"));
+
     }
 
     @Override
