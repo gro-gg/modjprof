@@ -1,5 +1,9 @@
 package ch.puzzle.modjprof;
 
+import static ch.puzzle.modjprof.AgentConstants.CLASS_FILE_TRANSFORMER_CLASS;
+import static ch.puzzle.modjprof.AgentConstants.TRC_FILE;
+import static ch.puzzle.modjprof.AgentConstants.TRC_FILE_DIR;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -13,9 +17,6 @@ import ch.puzzle.modjprof.classloader.AgentClassLoader;
 public class Agent {
 
     private static ClassLoader agentClassLoader;
-    private static final String TRC_FILE_DIR = "/tmp/";
-    private static final String TRC_FILE = TRC_FILE_DIR + "modjprof_%d.trc";
-    private static final String CLASS_FILE_TRANSFORMER_CLASS = "ch.puzzle.modjprof.instrumentation.ASMClassFileTransformer";
 
     static {
         System.err.println("*** " + Agent.class.getSimpleName() + " loaded by "
