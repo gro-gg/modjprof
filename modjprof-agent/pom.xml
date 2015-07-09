@@ -33,11 +33,11 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
+		<testResources>
+			<testResource>
 				<directory>src/integration-test/resources</directory>
-			</resource>
-		</resources>
+			</testResource>
+		</testResources>
 
 		<plugins>
 
