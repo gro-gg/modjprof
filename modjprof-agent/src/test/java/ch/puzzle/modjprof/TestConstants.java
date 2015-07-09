@@ -4,7 +4,7 @@ public class TestConstants {
 
     private static final String VERSION = "0.0.1-SNAPSHOT";
 
-    public static final String AGENT_JAR = "modjprodf-agent-" + VERSION + ".jar";
+    public static final String AGENT_JAR = "modjprof-agent-" + VERSION + ".jar";
 
     public static final String APPLICATION_JAR = "sample-application-" + VERSION + "-jar-with-dependencies.jar";
 

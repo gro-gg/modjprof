@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>modjprodf-agent</artifactId>
+	<artifactId>modjprof-agent</artifactId>
 
 	<parent>
 		<groupId>ch.puzzle.modjprof</groupId>
-		<artifactId>modjprodf-parent</artifactId>
+		<artifactId>modjprof-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
@@ -154,9 +154,7 @@
 										<artifactId>
 											build-helper-maven-plugin
 										</artifactId>
-										<versionRange>
-											[1.9.1,)
-										</versionRange>
+										<versionRange>[1.5-redhat-1,)</versionRange>
 										<goals>
 											<goal>add-source</goal>
 											<goal>add-test-source</goal>
