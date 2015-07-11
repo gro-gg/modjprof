@@ -22,10 +22,9 @@ public class MethodSelectorClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String methodName, String desc, String signature, String[] exceptions) {
         MethodVisitor parentMethodVisitor = super.visitMethod(access, methodName, desc, signature, exceptions);
-        if (!methodName.equals("<init>")) {
-            MethodVisitor instrumentMeasurementPonitsMethodVisitor = new InstrumentationMethodVisitor(
-                    parentMethodVisitor, className, methodName, desc);
-            return instrumentMeasurementPonitsMethodVisitor;
+        if (!methodName.equals("<init>") && !methodName.equals("<clinit>")) {
+            MethodVisitor methodVisitor = new InstrumentationMethodVisitor(parentMethodVisitor, className, methodName, desc);
+            return methodVisitor;
         }
         return parentMethodVisitor;
     }

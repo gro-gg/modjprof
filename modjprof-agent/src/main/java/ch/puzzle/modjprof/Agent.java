@@ -29,8 +29,8 @@ public class Agent {
         agentClassLoader = new AgentClassLoader();
         ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(agentClassLoader);
-        Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
 
+        Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
         ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor().newInstance();
         inst.addTransformer(classFileTransformer);
 

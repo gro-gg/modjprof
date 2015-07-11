@@ -13,11 +13,11 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
-public class ASMClassFileTransformer implements ClassFileTransformer {
+public class InstrumentationClassFileTransformer implements ClassFileTransformer {
 
     static {
-        System.err.println("*** " + ASMClassFileTransformer.class.getSimpleName() + " loaded by "
-                + ASMClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
+        System.err.println("*** " + InstrumentationClassFileTransformer.class.getSimpleName() + " loaded by "
+                + InstrumentationClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
     }
 
     @Override
@@ -28,9 +28,9 @@ public class ASMClassFileTransformer implements ClassFileTransformer {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
                 ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
-                ClassVisitor instrumentMethodClassVisitor = new MethodSelectorClassVisitor(classWriter, className);
+                ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
-                    classReader.accept(instrumentMethodClassVisitor, 0);
+                    classReader.accept(classVisitor, 0);
                     return classWriter.toByteArray();
                 }
             } catch (Throwable e) {
