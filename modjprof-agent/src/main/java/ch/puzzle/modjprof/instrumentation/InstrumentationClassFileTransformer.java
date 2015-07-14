@@ -15,16 +15,17 @@ import org.objectweb.asm.ClassWriter;
 
 public class InstrumentationClassFileTransformer implements ClassFileTransformer {
 
-    static {
-        System.err.println("*** " + InstrumentationClassFileTransformer.class.getSimpleName() + " loaded by "
-                + InstrumentationClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
-    }
+    //    static {
+    //        System.err.println("*** " + InstrumentationClassFileTransformer.class.getSimpleName() + " loaded by "
+    //                + InstrumentationClassFileTransformer.class.getClassLoader().getClass().getSimpleName());
+    //    }
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        if (className.startsWith("ch/puzzle") || className.startsWith("najs")) {
+        if (className.startsWith("ch/puzzle") || className.startsWith("najs")
+                || className.startsWith("org/jboss/as/quickstarts/greeter/web")) {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
                 ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);

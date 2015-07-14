@@ -7,10 +7,10 @@ import org.objectweb.asm.MethodVisitor;
 
 public class MethodSelectorClassVisitor extends ClassVisitor {
 
-    static {
-        System.err.println("*** " + MethodSelectorClassVisitor.class.getSimpleName() + " loaded by "
-                + MethodSelectorClassVisitor.class.getClassLoader().getClass().getSimpleName());
-    }
+    //    static {
+    //        System.err.println("*** " + MethodSelectorClassVisitor.class.getSimpleName() + " loaded by "
+    //                + MethodSelectorClassVisitor.class.getClassLoader().getClass().getSimpleName());
+    //    }
 
     private String className;
 

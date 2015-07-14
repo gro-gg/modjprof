@@ -10,21 +10,24 @@ import java.util.Properties;
 
 public class AgentClassLoader extends URLClassLoader {
 
-    static {
-        System.err.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
-                + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
-    }
+    //    static {
+    //        System.err.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
+    //                + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
+    //    }
 
     public AgentClassLoader() {
         // set the parent class loader
         super(new URL[] {}, AgentClassLoader.class.getClassLoader());
 
+        try {
         // add this jar to search path
-        URL jarUrl = AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation();
+            // TODO: AgentClassLoader.class.getProtectionDomain().getCodeSource() is null on Wildfly
+            //        URL jarUrl = AgentClassLoader.class.getProtectionDomain().getCodeSource().getLocation();
+            URL jarUrl = new URL("file:/tmp/modjprof-agent-0.0.1-SNAPSHOT.jar");
+        System.err.println(jarUrl.toString());
         addURL(jarUrl);
 
         // add all dependencies
-        try {
             if (jarUrl.getProtocol().equals("file") && jarUrl.toString().endsWith(".jar")) {
                 jarUrl = new URL("jar:" + jarUrl.toString() + "!/");
             }
