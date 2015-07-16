@@ -1,7 +1,12 @@
 package ch.puzzle.modjprof;
 
+import static ch.puzzle.modjprof.TestConstants.AGENT_JAR_LOCATION;
+import static ch.puzzle.modjprof.TestConstants.APPLICATION_JAR_LOCATION;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +15,6 @@ import java.util.List;
 public class BaseIntegrationTest {
 
     private static final boolean printOutput = false;
-    private static final String VERSION = "0.0.1-SNAPSHOT";
-    private static final String AGENT_JAR = "target/modjprodf-agent-" + VERSION + "-jar-with-dependencies.jar";
-    private static final String APPLICATION_JAR = "../sample-application/target/sample-application-" + VERSION + ".jar";
-
 
     protected int execute(String[] args) throws IOException, InterruptedException {
         return execute(args, null);
@@ -29,9 +30,17 @@ public class BaseIntegrationTest {
         return p.waitFor();
     }
 
+    protected BufferedReader executeAndReadOutput(String[] args, String agentArgs) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder(buildCommandLine(args, agentArgs));
+        Process p = pb.start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        p.waitFor();
+        return reader;
+    }
+
     private List<String> buildCommandLine(String[] args, String agentArgs) throws IOException {
-        File applicationJar = new File(APPLICATION_JAR);
-        File agentJar = new File(AGENT_JAR);
+        File applicationJar = new File(APPLICATION_JAR_LOCATION);
+        File agentJar = new File(AGENT_JAR_LOCATION);
         List<String> command = new ArrayList<String>();
         command.add("java");
         command.add("-javaagent:" + agentJar.getCanonicalPath());
@@ -39,9 +48,10 @@ public class BaseIntegrationTest {
             command.add("=");
             command.add(agentArgs);
         }
+        command.addAll(Arrays.asList(args));
         command.add("-jar");
         command.add(applicationJar.getCanonicalPath());
-        command.addAll(Arrays.asList(args));
+        //        System.err.println("executing: " + command.toString());
         return command;
     }
 

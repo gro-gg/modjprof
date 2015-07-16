@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
+import java.lang.management.ManagementFactory;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
 
@@ -18,19 +21,22 @@ public class Agent {
 
     private static ClassLoader agentClassLoader;
 
-    static {
-        System.err.println("*** " + Agent.class.getSimpleName() + " loaded by "
-                + Agent.class.getClassLoader().getClass().getSimpleName());
-    }
+    private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
+
+    //    static {
+    //        System.err.println("*** " + Agent.class.getSimpleName() + " loaded by "
+    //                + Agent.class.getClassLoader().getClass().getSimpleName());
+    //    }
 
     public static void premain(String agentArgs, Instrumentation inst) throws Exception {
         deleteAllTraceFiles();
 
-        agentClassLoader = new AgentClassLoader();
+        URL jarUrl = getJavaagentUrlFromVmArguments();
+        agentClassLoader = new AgentClassLoader(jarUrl);
         ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(agentClassLoader);
-        Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
 
+        Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
         ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor().newInstance();
         inst.addTransformer(classFileTransformer);
 
@@ -90,5 +96,16 @@ public class Agent {
         for (int i = 0; i < matchingFiles.length; i++) {
             matchingFiles[i].delete();
         }
+    }
+
+    private static URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
+        // find the agent location
+        String javaagent = null;
+        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
+                javaagent = argument.substring(JAVAAGENT_VM_PREFIX.length());
+            }
+        }
+        return new URL("file:" + javaagent);
     }
 }

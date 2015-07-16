@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>modjprodf-agent</artifactId>
+	<artifactId>modjprof-agent</artifactId>
 
 	<parent>
 		<groupId>ch.puzzle.modjprof</groupId>
-		<artifactId>modjprodf-parent</artifactId>
+		<artifactId>modjprof-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
@@ -33,38 +33,70 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
+		<testResources>
+			<testResource>
 				<directory>src/integration-test/resources</directory>
-			</resource>
-		</resources>
+			</testResource>
+		</testResources>
 
 		<plugins>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
+							<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
+							<Can-Redefine-Classes>true</Can-Redefine-Classes>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>build-classpath</id>
+						<phase>compile</phase>
 						<goals>
-							<goal>attached</goal>
+							<goal>build-classpath</goal>
 						</goals>
-						<phase>package</phase>
 						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>ch.puzzle.modjprof.Agent</mainClass>
-								</manifest>
-								<manifestEntries>
-									<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
-									<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
-									<Can-Redefine-Classes>true</Can-Redefine-Classes>
-									<Can-Retransform-Classes>true</Can-Retransform-Classes>
-								</manifestEntries>
-							</archive>
+							<regenerateFile>true</regenerateFile>
+							<includeScope>compile</includeScope>
+							<excludeArtifactIds>tools</excludeArtifactIds>
+							<prefix>.</prefix>
+							<pathSeparator>:</pathSeparator>
+							<fileSeparator>/</fileSeparator>
+							<outputFile>${project.build.directory}/classes/classpath.properties</outputFile>
+							<outputFilterFile>true</outputFilterFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<includeScope>compile</includeScope>
+							<excludeArtifactIds>tools</excludeArtifactIds>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 					</execution>
 				</executions>
@@ -122,12 +154,29 @@
 										<artifactId>
 											build-helper-maven-plugin
 										</artifactId>
-										<versionRange>
-											[1.9.1,)
-										</versionRange>
+										<versionRange>[1.5-redhat-1,)</versionRange>
 										<goals>
 											<goal>add-source</goal>
 											<goal>add-test-source</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.8,)
+										</versionRange>
+										<goals>
+											<goal>build-classpath</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
