@@ -55,7 +55,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -131,6 +131,19 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				 <configuration>
+          			<executable>java</executable>
+          			<arguments>
+          				<argument>-javaagent:target/modjprof-agent-${project.version}.jar</argument>
+          				<argument>-jar</argument>
+          				<argument>../sample-application/target/sample-application-${project.version}-jar-with-dependencies.jar</argument>
+          			</arguments>
+          		</configuration>
 			</plugin>
 
 		</plugins>
