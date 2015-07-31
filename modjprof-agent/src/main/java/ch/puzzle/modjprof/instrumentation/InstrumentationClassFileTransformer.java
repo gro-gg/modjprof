@@ -39,9 +39,9 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
                 || className.startsWith("org/jboss/as/quickstarts/greeter/web")) {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
-                ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
-                ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
+                    ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
+                    ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
                     classReader.accept(classVisitor, 0);
                     return classWriter.toByteArray();
                 }
