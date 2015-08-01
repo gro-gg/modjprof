@@ -23,8 +23,12 @@ import java.security.ProtectionDomain;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InstrumentationClassFileTransformer implements ClassFileTransformer {
+
+    static Logger LOGGER = LoggerFactory.getLogger(InstrumentationClassFileTransformer.class);
 
     //    static {
     //        System.err.println("*** " + InstrumentationClassFileTransformer.class.getSimpleName() + " loaded by "
@@ -40,6 +44,7 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
+                    LOGGER.debug("instrumenting class " + className);
                     ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
                     ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
                     classReader.accept(classVisitor, 0);

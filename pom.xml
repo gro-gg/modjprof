@@ -25,6 +25,7 @@
 		<version.commons-io>2.4</version.commons-io>
 		<version.exec-maven-plugin>1.4.0</version.exec-maven-plugin>
 		<version.build-helper-maven-plugin>1.9.1</version.build-helper-maven-plugin>
+		<verions.slf4j>1.7.12</verions.slf4j>
 	</properties>
 
 	<dependencyManagement>
@@ -34,6 +35,17 @@
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
 				<version>${version.asm}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${verions.slf4j}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${verions.slf4j}</version>
 			</dependency>
 
 			<!-- dependencies only used in unit tests -->
