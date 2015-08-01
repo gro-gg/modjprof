@@ -76,11 +76,7 @@ public class AgentClassLoader extends URLClassLoader {
 
             // if we could not find it, delegate to parent
             if (c == null) {
-                if (getParent() != null) {
-                    c = getParent().loadClass(name);
-                } else {
-                    c = getSystemClassLoader().loadClass(name);
-                }
+                getParentClassLoader().loadClass(name);
                 log("loading of class " + name + " delegated to parent class loader");
             } else {
                 log("class " + name + " loaded");
@@ -105,7 +101,7 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         // if we could not find it, delegate to parent
-        return getParent().getResource(name);
+        return getParentClassLoader().getResource(name);
     }
 
     @Override
@@ -118,7 +114,15 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         // if we could not find it, delegate to parent
-        return getParent().getResources(name);
+        return getParentClassLoader().getResources(name);
+    }
+
+    private ClassLoader getParentClassLoader() {
+        if (getParent() != null) {
+            return getParent();
+        } else {
+            return getSystemClassLoader();
+        }
     }
 
     private void log(String message) {
