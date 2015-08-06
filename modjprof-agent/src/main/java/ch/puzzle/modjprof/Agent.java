@@ -34,11 +34,6 @@ public class Agent {
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
 
-    //    static {
-    //        System.err.println("*** " + Agent.class.getSimpleName() + " loaded by "
-    //                + Agent.class.getClassLoader().getClass().getSimpleName());
-    //    }
-
     public static void premain(String agentArgs, Instrumentation inst) throws Exception {
         deleteAllTraceFiles();
 

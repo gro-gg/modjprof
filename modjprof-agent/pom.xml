@@ -16,6 +16,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -55,7 +64,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -77,13 +86,6 @@
 							<outputFilterFile>true</outputFilterFile>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
 					<execution>
 						<id>copy-dependencies</id>
 						<phase>package</phase>
@@ -118,6 +120,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${version.build-helper-maven-plugin}</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -131,6 +134,21 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${version.exec-maven-plugin}</version>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</argument>
+						<argument>-javaagent:target/modjprof-agent-${project.version}.jar</argument>
+						<argument>-jar</argument>
+						<argument>../sample-application/target/sample-application-${project.version}-jar-with-dependencies.jar</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 
 		</plugins>

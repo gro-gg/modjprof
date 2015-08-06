@@ -13,6 +13,10 @@ Build and package the application and run all integration tests:
 
         mvn clean verify
 
+If you get errors in the integration tests, try to run the sample application with the integrated  Exec Maven Plugin:
+
+        mvn clean package exec:exec
+
 ## Java Agent
 ### Application Server Startup Settings: JBoss WildFly (Standalone mode)
 <!-- ### Domain mode-->

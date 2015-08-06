@@ -62,7 +62,6 @@ public class BaseIntegrationTest {
         command.addAll(Arrays.asList(args));
         command.add("-jar");
         command.add(applicationJar.getCanonicalPath());
-        //        System.err.println("executing: " + command.toString());
         return command;
     }
 

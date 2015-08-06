@@ -21,11 +21,6 @@ import org.objectweb.asm.MethodVisitor;
 
 public class InstrumentationMethodVisitor extends MethodVisitor {
 
-    //    static {
-    //        System.err.println("*** " + InstrumentationMethodVisitor.class.getSimpleName() + " loaded by "
-    //                + InstrumentationMethodVisitor.class.getClassLoader().getClass().getSimpleName());
-    //    }
-
     private String methodName;
     private String className;
     private String methodDescriptor;

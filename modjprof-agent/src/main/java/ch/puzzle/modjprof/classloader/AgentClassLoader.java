@@ -21,11 +21,6 @@ import java.util.Properties;
 
 public class AgentClassLoader extends URLClassLoader {
 
-    //    static {
-    //        System.err.println("*** " + AgentClassLoader.class.getSimpleName() + " loaded by "
-    //                + AgentClassLoader.class.getClassLoader().getClass().getSimpleName());
-    //    }
-
     public AgentClassLoader(URL jarUrl) {
         // set the parent class loader
         super(new URL[] {}, AgentClassLoader.class.getClassLoader());
@@ -53,7 +48,7 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         for (URL url : getURLs()) {
-            System.err.println("loading jar: " + url);
+            log("added to class loader class path: " + url);
         }
     }
 
@@ -81,18 +76,16 @@ public class AgentClassLoader extends URLClassLoader {
 
             // if we could not find it, delegate to parent
             if (c == null) {
-                if (getParent() != null) {
-                    c = getParent().loadClass(name);
-                } else {
-                    c = getSystemClassLoader().loadClass(name);
-                }
+                getParentClassLoader().loadClass(name);
+                log("loading of class " + name + " delegated to parent class loader");
+            } else {
+                log("class " + name + " loaded");
             }
 
             if (resolve) {
                 resolveClass(c);
             }
 
-            System.err.println("===> class " + name + " loaded with AgentClassLoader");
 
             return c;
         }
@@ -108,7 +101,7 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         // if we could not find it, delegate to parent
-        return getParent().getResource(name);
+        return getParentClassLoader().getResource(name);
     }
 
     @Override
@@ -121,6 +114,18 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         // if we could not find it, delegate to parent
-        return getParent().getResources(name);
+        return getParentClassLoader().getResources(name);
+    }
+
+    private ClassLoader getParentClassLoader() {
+        if (getParent() != null) {
+            return getParent();
+        } else {
+            return getSystemClassLoader();
+        }
+    }
+
+    private void log(String message) {
+        System.err.println("[main] MAIN " + AgentClassLoader.class.getName() + " - " + message);
     }
 }
