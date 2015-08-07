@@ -54,6 +54,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<finalName>${artifactId}</finalName>
 					<archive>
 						<manifestEntries>
 							<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
