@@ -2,6 +2,8 @@ package ch.puzzle.modjprof;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +39,36 @@ public class ControlServlet extends HttpServlet {
     }
 
     private void startProfiler(PrintWriter out, String pathInfo) {
-        //TODO start profiler
+        try {
+            Class<?> c = Class.forName("ch.puzzle.modjprof.Agent");
+            Method method = c.getMethod("notifyEnterMethod", String.class);
+            method.invoke(null, "xxxxx");
+            out.println("profiler invoked");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            out.println("ClassNotFoundException");
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            out.println("NoSuchMethodException");
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            out.println("SecurityException");
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            out.println("IllegalAccessException");
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            out.println("IllegalArgumentException");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            out.println("InvocationTargetException");
+            e.printStackTrace();
+        }
         out.println("<p>Profiler started!</p>");
     }
 
