@@ -11,7 +11,7 @@
  */
 package ch.puzzle.modjprof;
 
-public class AgentConstants {
+public class AgentConfiguration {
 
     public static final String TRC_FILE_DIR = "/tmp/";
 
