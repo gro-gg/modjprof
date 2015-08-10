@@ -22,15 +22,17 @@ public class AgentLogWriter {
     }
 
     private void writeMethodCallLine(String flowPattern, String methodSignature) {
-        long threadId = Thread.currentThread().getId();
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(new FileWriter(new File(String.format(TRC_FILE, threadId)), true), true);
-            writer.println(buildMethodCallLineString(flowPattern, methodSignature));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            writer.close();
+        if (AgentConfiguration.isProfilerEnabled()) {
+            long threadId = Thread.currentThread().getId();
+            PrintWriter writer = null;
+            try {
+                writer = new PrintWriter(new FileWriter(new File(String.format(TRC_FILE, threadId)), true), true);
+                writer.println(buildMethodCallLineString(flowPattern, methodSignature));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                writer.close();
+            }
         }
     }
 
