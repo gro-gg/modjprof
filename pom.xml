@@ -9,6 +9,7 @@
 
 	<modules>
 		<module>sample-application</module>
+		<module>sample-servlet</module>
 		<module>modjprof-agent</module>
 	</modules>
 
