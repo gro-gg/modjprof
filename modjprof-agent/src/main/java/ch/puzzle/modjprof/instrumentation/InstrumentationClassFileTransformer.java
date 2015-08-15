@@ -34,7 +34,7 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        if (className.startsWith("ch/puzzle") || className.startsWith("najs")
+        if (!className.startsWith("ch/puzzle/modjprof") && className.startsWith("ch/puzzle") || className.startsWith("najs")
                 || className.startsWith("org/jboss/as/quickstarts/greeter/web")) {
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
