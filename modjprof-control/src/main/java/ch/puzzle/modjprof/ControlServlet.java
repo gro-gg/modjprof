@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 @WebServlet(name = "ControlServlet", urlPatterns = { "/*" })
 public class ControlServlet extends HttpServlet {
 
@@ -39,42 +41,42 @@ public class ControlServlet extends HttpServlet {
     }
 
     private void startProfiler(PrintWriter out, String pathInfo) {
-        try {
-            Class<?> c = Class.forName("ch.puzzle.modjprof.Agent");
-            Method method = c.getMethod("notifyEnterMethod", String.class);
-            method.invoke(null, "xxxxx");
-            out.println("profiler invoked");
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            out.println("ClassNotFoundException");
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            out.println("NoSuchMethodException");
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            out.println("SecurityException");
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            out.println("IllegalAccessException");
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            out.println("IllegalArgumentException");
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            out.println("InvocationTargetException");
-            e.printStackTrace();
-        }
+        invokeAgent("startAgent", out);
         out.println("<p>Profiler started!</p>");
     }
 
     private void stopProfiler(PrintWriter out, String pathInfo) {
-        //TODO stop profiler
+        invokeAgent("stopAgent", out);
         out.println("<p>Profiler stopped!</p>");
+    }
+
+    private void invokeAgent(String method, PrintWriter out) {
+        try {
+            Class<?> c = Class.forName("ch.puzzle.modjprof.AgentControl");
+            Method getInstanceMethod = c.getMethod("getInstance");
+            Object instance = getInstanceMethod.invoke(null);
+            Method startAgentMethod = c.getMethod(method);
+            startAgentMethod.invoke(instance);
+        } catch (ClassNotFoundException e) {
+            printError(e, out);
+        } catch (NoSuchMethodException e) {
+            printError(e, out);
+        } catch (SecurityException e) {
+            printError(e, out);
+        } catch (IllegalAccessException e) {
+            printError(e, out);
+        } catch (IllegalArgumentException e) {
+            printError(e, out);
+        } catch (InvocationTargetException e) {
+            printError(e, out);
+        }
+    }
+
+    private void printError(Exception e, PrintWriter out) {
+        out.println("<p><font color=\"red\">");
+        out.println(ExceptionUtils.getStackTrace(e));
+        out.println("</font></p>");
+        e.printStackTrace();
     }
 
     private void printUsage(PrintWriter out, boolean unknownCommand) {
@@ -83,8 +85,8 @@ public class ControlServlet extends HttpServlet {
         }
         out.println("Usage:");
         out.println("<table border=\"0\"><col width=\"130\">");
-        out.println("<tr><td>/start</td><td>will start the profiler</td></tr>");
-        out.println("<tr><td>/stop</td><td>will stop the profiler</td></tr>");
+        out.println("<tr><td><a href=\"start\">/start</a></td><td>will start the profiler</td></tr>");
+        out.println("<tr><td><a href=\"stop\">/stop</a></td><td>will stop the profiler</td></tr>");
         out.println("</table>");
     }
 
@@ -96,7 +98,7 @@ public class ControlServlet extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         out.println("<h1>modjprof ControlServlet</h1>");
-        out.println("<p>PathInfo: " + pathInfo + "</p>");
+        //out.println("<p>PathInfo: " + pathInfo + "</p>");
     }
 
     private void printResponseFooter(PrintWriter out) {

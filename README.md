@@ -34,7 +34,7 @@ or try to run the sample application with the integrated  Exec Maven Plugin:
 <!-- ### Domain mode-->
 1. Copy the agent and all its dependencies to `/tmp`:
 
-        cp target/*.jar /tmp/
+        cp modjprof-agent/target/*.jar /tmp/
 
 1. Add this at the bottom of `$JBOSS_HOME/bin/standalone.conf`:
 
@@ -43,7 +43,7 @@ or try to run the sample application with the integrated  Exec Maven Plugin:
 #### Tomcat
 1. Copy the agent and all its dependencies to `/tmp`:
 
-        cp target/*.jar /tmp/
+        cp modjprof-agent/target/*.jar /tmp/
 
 1. Add the following line to `$TOMCAT_HOME/bin/setenv.sh`. You might need to create this file first:
 
