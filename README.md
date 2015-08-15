@@ -17,11 +17,16 @@ This is a small, modular java profiler. It consists of diffrent parts that may b
 ## Build and Package the Profiler
 Build and package the application and run all integration tests:
 
-        mvn clean verify
+    mvn clean verify
 
-If you get errors in the integration tests, try to run the sample application with the integrated  Exec Maven Plugin:
+If you get errors in the integration tests, set log level to DEBUG:
 
-        mvn clean package exec:exec
+    mvn clean verify -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG
+
+or try to run the sample application with the integrated  Exec Maven Plugin:
+
+    cd modjprof-agent/
+    mvn clean package exec:exec
 
 ## Java Agent (modjprof-agent)
 ### Application Server Startup Settings:

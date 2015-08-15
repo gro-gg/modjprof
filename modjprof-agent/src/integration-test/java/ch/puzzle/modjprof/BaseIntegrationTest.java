@@ -23,9 +23,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BaseIntegrationTest {
 
     private static final boolean printOutput = false;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(BaseIntegrationTest.class);
 
     protected int execute(String[] args) throws IOException, InterruptedException {
         return execute(args, null);
@@ -62,7 +67,18 @@ public class BaseIntegrationTest {
         command.addAll(Arrays.asList(args));
         command.add("-jar");
         command.add(applicationJar.getCanonicalPath());
+        logCommand(command);
         return command;
     }
 
+    private void logCommand(List<String> command) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : command) {
+            if (sb.length() != 0) {
+                sb.append(" ");
+            }
+            sb.append(s);
+        }
+        LOGGER.debug("executing command: " + sb.toString());
+    }
 }

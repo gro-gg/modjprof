@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public class InstrumentationClassFileTransformer implements ClassFileTransformer {
 
-    static Logger LOGGER = LoggerFactory.getLogger(InstrumentationClassFileTransformer.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(InstrumentationClassFileTransformer.class);
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
