@@ -72,15 +72,18 @@ public class AgentClassLoader extends URLClassLoader {
                     // ClassNotFoundException thrown if class not found
                     // in the search path of this class loader
                 }
+
+                // if we could not find it, delegate to parent
+                if (c == null) {
+                    getParentClassLoader().loadClass(name);
+                    log("loading of class " + name + " delegated to parent class loader");
+                } else {
+                    log("class " + name + " loaded");
+                }
+            } else {
+                log("class " + name + " already loaded");
             }
 
-            // if we could not find it, delegate to parent
-            if (c == null) {
-                getParentClassLoader().loadClass(name);
-                log("loading of class " + name + " delegated to parent class loader");
-            } else {
-                log("class " + name + " loaded");
-            }
 
             if (resolve) {
                 resolveClass(c);
