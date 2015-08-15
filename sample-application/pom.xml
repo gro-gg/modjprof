@@ -8,7 +8,7 @@
 		<artifactId>modjprof-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
@@ -24,6 +24,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<finalName>${artifactId}</finalName>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
@@ -33,7 +34,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -44,6 +45,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
+							<finalName>${artifactId}</finalName>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>

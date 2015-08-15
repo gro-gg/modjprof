@@ -11,12 +11,26 @@
  */
 package ch.puzzle.modjprof;
 
-public class AgentConstants {
+public class AgentConfiguration {
+
+    private static boolean profilerEnabled = true;
 
     public static final String TRC_FILE_DIR = "/tmp/";
 
     public static final String TRC_FILE = TRC_FILE_DIR + "modjprof_%d.trc";
 
     public static final String CLASS_FILE_TRANSFORMER_CLASS = "ch.puzzle.modjprof.instrumentation.InstrumentationClassFileTransformer";
+
+    public static void enableProfiler() {
+        profilerEnabled = true;
+    }
+
+    public static void disableProfiler() {
+        profilerEnabled = false;
+    }
+
+    public static boolean isProfilerEnabled() {
+        return profilerEnabled;
+    }
 
 }

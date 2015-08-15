@@ -54,6 +54,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<finalName>${artifactId}</finalName>
 					<archive>
 						<manifestEntries>
 							<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
@@ -144,9 +145,9 @@
 					<executable>java</executable>
 					<arguments>
 						<argument>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</argument>
-						<argument>-javaagent:target/modjprof-agent-${project.version}.jar</argument>
+						<argument>-javaagent:target/modjprof-agent.jar</argument>
 						<argument>-jar</argument>
-						<argument>../sample-application/target/sample-application-${project.version}-jar-with-dependencies.jar</argument>
+						<argument>../sample-application/target/sample-application-jar-with-dependencies.jar</argument>
 					</arguments>
 				</configuration>
 			</plugin>
