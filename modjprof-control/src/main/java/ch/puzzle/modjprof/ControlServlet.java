@@ -28,9 +28,11 @@ public class ControlServlet extends HttpServlet {
             if ("/".equals(pathInfo)) {
                 printUsage(out, false);
             } else if ("/start".equals(pathInfo)) {
-                startProfiler(out, pathInfo);
+                startProfiler(out);
             } else if ("/stop".equals(pathInfo)) {
-                stopProfiler(out, pathInfo);
+                stopProfiler(out);
+            } else if ("/list".equals(pathInfo)) {
+                listFiles(out);
             } else {
                 printUsage(out, true);
             }
@@ -40,12 +42,16 @@ public class ControlServlet extends HttpServlet {
         }
     }
 
-    private void startProfiler(PrintWriter out, String pathInfo) {
+    private void listFiles(PrintWriter out) {
+        invokeAgent("listFiles", out);
+    }
+
+    private void startProfiler(PrintWriter out) {
         invokeAgent("startAgent", out);
         out.println("<p>Profiler started!</p>");
     }
 
-    private void stopProfiler(PrintWriter out, String pathInfo) {
+    private void stopProfiler(PrintWriter out) {
         invokeAgent("stopAgent", out);
         out.println("<p>Profiler stopped!</p>");
     }

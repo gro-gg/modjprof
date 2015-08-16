@@ -21,4 +21,8 @@ public class AgentControl {
         AgentConfiguration.disableProfiler();
         System.err.println("AgentControl: stopAgent() called");
     }
+
+    public void listTraceFiles() {
+
+    }
 }
