@@ -58,7 +58,7 @@ public class ControlServlet extends HttpServlet {
 
     private void invokeAgent(String method, PrintWriter out) {
         try {
-            Class<?> c = Class.forName("ch.puzzle.modjprof.AgentControl");
+            Class<?> c = Class.forName("ch.puzzle.modjprof.agent.AgentControl");
             Method getInstanceMethod = c.getMethod("getInstance");
             Object instance = getInstanceMethod.invoke(null);
             Method startAgentMethod = c.getMethod(method);

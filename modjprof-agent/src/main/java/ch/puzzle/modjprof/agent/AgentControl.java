@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.agent;
 
 public class AgentControl {
 

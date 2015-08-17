@@ -11,7 +11,7 @@
  */
 package ch.puzzle.modjprof.instrumentation;
 
-import static ch.puzzle.modjprof.AgentConfiguration.TRC_FILE;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE;
 import static org.apache.commons.io.Charsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

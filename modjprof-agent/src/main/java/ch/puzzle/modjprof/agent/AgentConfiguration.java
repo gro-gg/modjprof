@@ -9,7 +9,7 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See LICENSE file for more details.
  */
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.agent;
 
 public class AgentConfiguration {
 
