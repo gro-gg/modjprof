@@ -19,30 +19,35 @@ public class ControlServlet extends HttpServlet {
     private static final long serialVersionUID = 7289197726261711665L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
-
-        String baseURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath() + "/";
-
         response.setContentType("text/html;charset=UTF-8");
+        String pathInfo = request.getPathInfo();
         PrintWriter out = response.getWriter();
         try {
             printResponseHeader(out, pathInfo);
-
-            if ("/".equals(pathInfo)) {
-                printUsage(out, baseURI, false);
-            } else if ("/start".equals(pathInfo)) {
-                startProfiler(out);
-            } else if ("/stop".equals(pathInfo)) {
-                stopProfiler(out);
-            } else if ("/list".equals(pathInfo)) {
-                listFiles(out);
-            } else {
-                printUsage(out, baseURI, true);
-            }
+            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), out);
             printResponseFooter(out);
         } finally {
             out.close();
+        }
+    }
+
+    private String getBaseUri(HttpServletRequest request) {
+        String baseURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath() + "/";
+        return baseURI;
+    }
+
+    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, PrintWriter out) {
+        if ("/".equals(pathInfo)) {
+            printUsage(out, baseURI, false);
+        } else if ("/start".equals(pathInfo)) {
+            startProfiler(out);
+        } else if ("/stop".equals(pathInfo)) {
+            stopProfiler(out);
+        } else if ("/list".equals(pathInfo)) {
+            listFiles(out);
+        } else {
+            printUsage(out, baseURI, true);
         }
     }
 
