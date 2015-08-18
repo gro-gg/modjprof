@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
