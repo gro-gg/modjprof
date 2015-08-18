@@ -21,12 +21,16 @@ public class ControlServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
 
+        String baseURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath() + "/";
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             printResponseHeader(out, pathInfo);
+
             if ("/".equals(pathInfo)) {
-                printUsage(out, false);
+                printUsage(out, baseURI, false);
             } else if ("/start".equals(pathInfo)) {
                 startProfiler(out);
             } else if ("/stop".equals(pathInfo)) {
@@ -34,7 +38,7 @@ public class ControlServlet extends HttpServlet {
             } else if ("/list".equals(pathInfo)) {
                 listFiles(out);
             } else {
-                printUsage(out, true);
+                printUsage(out, baseURI, true);
             }
             printResponseFooter(out);
         } finally {
@@ -85,14 +89,14 @@ public class ControlServlet extends HttpServlet {
         e.printStackTrace();
     }
 
-    private void printUsage(PrintWriter out, boolean unknownCommand) {
+    private void printUsage(PrintWriter out, String baseURI, boolean unknownCommand) {
         if (unknownCommand) {
             out.println("<p><font color=\"red\">unknown command!</font></p>");
         }
         out.println("Usage:");
         out.println("<table border=\"0\"><col width=\"130\">");
-        out.println("<tr><td><a href=\"start\">/start</a></td><td>will start the profiler</td></tr>");
-        out.println("<tr><td><a href=\"stop\">/stop</a></td><td>will stop the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "start\">/start</a></td><td>will start the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "stop\">/stop</a></td><td>will stop the profiler</td></tr>");
         out.println("</table>");
     }
 
