@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,40 +19,55 @@ public class ControlServlet extends HttpServlet {
     private static final long serialVersionUID = 7289197726261711665L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
-
         response.setContentType("text/html;charset=UTF-8");
+        String pathInfo = request.getPathInfo();
         PrintWriter out = response.getWriter();
         try {
             printResponseHeader(out, pathInfo);
-            if ("/".equals(pathInfo)) {
-                printUsage(out, false);
-            } else if ("/start".equals(pathInfo)) {
-                startProfiler(out, pathInfo);
-            } else if ("/stop".equals(pathInfo)) {
-                stopProfiler(out, pathInfo);
-            } else {
-                printUsage(out, true);
-            }
+            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), out);
             printResponseFooter(out);
         } finally {
             out.close();
         }
     }
 
-    private void startProfiler(PrintWriter out, String pathInfo) {
+    private String getBaseUri(HttpServletRequest request) {
+        String baseURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath() + "/";
+        return baseURI;
+    }
+
+    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, PrintWriter out) {
+        if ("/".equals(pathInfo)) {
+            printUsage(out, baseURI, false);
+        } else if ("/start".equals(pathInfo)) {
+            startProfiler(out);
+        } else if ("/stop".equals(pathInfo)) {
+            stopProfiler(out);
+        } else if ("/list".equals(pathInfo)) {
+            listFiles(out);
+        } else {
+            printUsage(out, baseURI, true);
+        }
+    }
+
+    private void listFiles(PrintWriter out) {
+        invokeAgent("listFiles", out);
+    }
+
+    private void startProfiler(PrintWriter out) {
         invokeAgent("startAgent", out);
         out.println("<p>Profiler started!</p>");
     }
 
-    private void stopProfiler(PrintWriter out, String pathInfo) {
+    private void stopProfiler(PrintWriter out) {
         invokeAgent("stopAgent", out);
         out.println("<p>Profiler stopped!</p>");
     }
 
     private void invokeAgent(String method, PrintWriter out) {
         try {
-            Class<?> c = Class.forName("ch.puzzle.modjprof.AgentControl");
+            Class<?> c = Class.forName("ch.puzzle.modjprof.agent.AgentControl");
             Method getInstanceMethod = c.getMethod("getInstance");
             Object instance = getInstanceMethod.invoke(null);
             Method startAgentMethod = c.getMethod(method);
@@ -79,14 +94,14 @@ public class ControlServlet extends HttpServlet {
         e.printStackTrace();
     }
 
-    private void printUsage(PrintWriter out, boolean unknownCommand) {
+    private void printUsage(PrintWriter out, String baseURI, boolean unknownCommand) {
         if (unknownCommand) {
             out.println("<p><font color=\"red\">unknown command!</font></p>");
         }
         out.println("Usage:");
         out.println("<table border=\"0\"><col width=\"130\">");
-        out.println("<tr><td><a href=\"start\">/start</a></td><td>will start the profiler</td></tr>");
-        out.println("<tr><td><a href=\"stop\">/stop</a></td><td>will stop the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "start\">/start</a></td><td>will start the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "stop\">/stop</a></td><td>will stop the profiler</td></tr>");
         out.println("</table>");
     }
 

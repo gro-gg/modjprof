@@ -37,13 +37,13 @@ public class InstrumentationMethodVisitor extends MethodVisitor {
     public void visitCode() {
         super.visitCode();
         mv.visitLdcInsn("L" + className + "; " + methodName + " " + methodDescriptor);
-        mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Agent", "notifyEnterMethod", "(Ljava/lang/String;)V", false);
+        mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/agent/Agent", "notifyEnterMethod", "(Ljava/lang/String;)V", false);
     }
 
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/Agent", "notifyExitMethod", "()V", false);
+            mv.visitMethodInsn(INVOKESTATIC, "ch/puzzle/modjprof/agent/Agent", "notifyExitMethod", "()V", false);
         }
         super.visitInsn(opcode);
     }

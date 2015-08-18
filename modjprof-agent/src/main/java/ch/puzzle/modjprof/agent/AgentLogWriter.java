@@ -1,6 +1,6 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.agent;
 
-import static ch.puzzle.modjprof.AgentConfiguration.TRC_FILE;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE;
 
 import java.io.File;
 import java.io.FileWriter;

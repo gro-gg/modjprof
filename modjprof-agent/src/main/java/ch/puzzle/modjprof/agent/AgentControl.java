@@ -1,4 +1,4 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.agent;
 
 public class AgentControl {
 
@@ -20,5 +20,9 @@ public class AgentControl {
     public void stopAgent() {
         AgentConfiguration.disableProfiler();
         System.err.println("AgentControl: stopAgent() called");
+    }
+
+    public void listTraceFiles() {
+
     }
 }
