@@ -22,15 +22,14 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BaseIntegrationTest {
 
     private static final boolean printOutput = false;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(BaseIntegrationTest.class);
+    private static Logger LOGGER = Logger.getLogger(BaseIntegrationTest.class.getName());
 
     protected int execute(String[] args) throws IOException, InterruptedException {
         return execute(args, null);
@@ -50,7 +49,6 @@ public class BaseIntegrationTest {
         ProcessBuilder pb = new ProcessBuilder(buildCommandLine(args, agentArgs));
         Process p = pb.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        p.waitFor();
         return reader;
     }
 
@@ -79,6 +77,6 @@ public class BaseIntegrationTest {
             }
             sb.append(s);
         }
-        LOGGER.debug("executing command: " + sb.toString());
+        LOGGER.info("executing command: " + sb.toString());
     }
 }

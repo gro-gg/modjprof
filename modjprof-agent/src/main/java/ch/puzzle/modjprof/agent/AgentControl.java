@@ -1,8 +1,12 @@
-package ch.puzzle.modjprof;
+package ch.puzzle.modjprof.agent;
+
+import java.util.logging.Logger;
 
 public class AgentControl {
 
     private static final AgentControl instance;
+
+    private final static Logger LOGGER = Logger.getLogger(AgentControl.class.getName());
 
     static {
         instance = new AgentControl();
@@ -14,11 +18,15 @@ public class AgentControl {
 
     public void startAgent() {
         AgentConfiguration.enableProfiler();
-        System.err.println("AgentControl: startAgent() called");
+        LOGGER.info("startAgent() called");
     }
 
     public void stopAgent() {
         AgentConfiguration.disableProfiler();
-        System.err.println("AgentControl: stopAgent() called");
+        LOGGER.info("stopAgent() called");
+    }
+
+    public void listTraceFiles() {
+
     }
 }

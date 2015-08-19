@@ -16,15 +16,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -57,8 +48,8 @@
 					<finalName>${artifactId}</finalName>
 					<archive>
 						<manifestEntries>
-							<Premain-Class>ch.puzzle.modjprof.Agent</Premain-Class>
-							<Agent-Class>ch.puzzle.modjprof.Agent</Agent-Class>
+							<Premain-Class>ch.puzzle.modjprof.agent.Agent</Premain-Class>
+							<Agent-Class>ch.puzzle.modjprof.agent.Agent</Agent-Class>
 							<Can-Redefine-Classes>true</Can-Redefine-Classes>
 							<Can-Retransform-Classes>true</Can-Retransform-Classes>
 						</manifestEntries>
@@ -107,6 +98,28 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>properties-copy</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/config</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<executions>
 					<execution>
@@ -144,7 +157,7 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG</argument>
+						<argument>-Djava.util.logging.config.file=target/logging.properties</argument>
 						<argument>-javaagent:target/modjprof-agent.jar</argument>
 						<argument>-jar</argument>
 						<argument>../sample-application/target/sample-application-jar-with-dependencies.jar</argument>
