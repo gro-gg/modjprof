@@ -77,6 +77,6 @@ public class BaseIntegrationTest {
             }
             sb.append(s);
         }
-        LOGGER.fine("executing command: " + sb.toString());
+        LOGGER.info("executing command: " + sb.toString());
     }
 }

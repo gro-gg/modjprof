@@ -20,11 +20,26 @@ Build and package the application and run all integration tests:
 
     mvn clean verify
 
-If you get errors in the integration tests, set log level to DEBUG:
 
-    mvn clean verify -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG
+### Troubleshooting
+You could set the log level to FINE (debug) by adding the path to the `logging.properties` as JVM argument:
 
-or try to run the sample application with the integrated  Exec Maven Plugin:
+    mvn clean verify -Djava.util.logging.config.file=modjprof-agent/target/logging.properties
+
+If you get errors while running the integration tests, try to manually run the failing test. You can find the correct command in the Maven output:
+
+    -------------------------------------------------------
+    T E S T S
+    -------------------------------------------------------
+    Running ch.puzzle.modjprof.instrumentation.InstrumentationIT
+    ...
+    INFORMATION: executing command: java -javaagent:/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar -jar /home/user/modjprof/sample-application/target/sample-application-jar-with-dependencies.jar
+
+Try to run this command with higher log level:
+
+    java -Djava.util.logging.config.file=/home/user/modjprof/modjprof-agent/target/logging.properties -javaagent:/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar -jar /home/user/modjprof/sample-application/target/sample-application-jar-with-dependencies.jar
+
+or try to run the sample application with the integrated Exec Maven Plugin:
 
     cd modjprof-agent/
     mvn clean package exec:exec
