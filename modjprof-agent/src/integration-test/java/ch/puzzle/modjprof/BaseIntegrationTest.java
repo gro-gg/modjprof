@@ -50,7 +50,6 @@ public class BaseIntegrationTest {
         ProcessBuilder pb = new ProcessBuilder(buildCommandLine(args, agentArgs));
         Process p = pb.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        p.waitFor();
         return reader;
     }
 

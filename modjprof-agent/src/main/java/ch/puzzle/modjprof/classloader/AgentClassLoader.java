@@ -18,8 +18,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class AgentClassLoader extends URLClassLoader {
+
+    private final static Logger LOGGER = Logger.getLogger(AgentClassLoader.class.getName());
 
     public AgentClassLoader(URL jarUrl) {
         // set the parent class loader
@@ -48,7 +51,7 @@ public class AgentClassLoader extends URLClassLoader {
         }
 
         for (URL url : getURLs()) {
-            log("added to class loader class path: " + url);
+            LOGGER.info("added to class loader class path: " + url);
         }
     }
 
@@ -76,12 +79,12 @@ public class AgentClassLoader extends URLClassLoader {
                 // if we could not find it, delegate to parent
                 if (c == null) {
                     getParentClassLoader().loadClass(name);
-                    log("loading of class " + name + " delegated to parent class loader");
+                    LOGGER.info("loading of class " + name + " delegated to parent class loader");
                 } else {
-                    log("class " + name + " loaded");
+                    LOGGER.info("class " + name + " loaded");
                 }
             } else {
-                log("class " + name + " already loaded");
+                LOGGER.info("class " + name + " already loaded");
             }
 
 
@@ -126,9 +129,5 @@ public class AgentClassLoader extends URLClassLoader {
         } else {
             return getSystemClassLoader();
         }
-    }
-
-    private void log(String message) {
-        System.err.println("[main] MAIN " + AgentClassLoader.class.getName() + " - " + message);
     }
 }
