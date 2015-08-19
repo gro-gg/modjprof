@@ -29,7 +29,6 @@
 		<version.commons-io>2.4</version.commons-io>
 		<version.commons-lang>2.6</version.commons-lang>
 		<version.build-helper-maven-plugin>1.9.1</version.build-helper-maven-plugin>
-		<verions.slf4j>1.7.12</verions.slf4j>
 		<version.javaee-web-api>6.0</version.javaee-web-api>
 	</properties>
 
@@ -50,17 +49,6 @@
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
 				<version>${version.asm}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${verions.slf4j}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${verions.slf4j}</version>
 			</dependency>
 
 			<dependency>

@@ -19,16 +19,15 @@ import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.logging.Logger;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InstrumentationClassFileTransformer implements ClassFileTransformer {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(InstrumentationClassFileTransformer.class);
+    private static Logger LOGGER = Logger.getLogger(InstrumentationClassFileTransformer.class.getName());
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
@@ -39,7 +38,7 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
             try {
                 ClassReader classReader = new ClassReader(classfileBuffer);
                 if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
-                    LOGGER.debug("instrumenting class " + className);
+                    LOGGER.fine("instrumenting class " + className);
                     ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
                     ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
                     classReader.accept(classVisitor, 0);
