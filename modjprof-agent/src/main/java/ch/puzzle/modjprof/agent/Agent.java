@@ -21,20 +21,31 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
 
 public class Agent {
 
+    @SuppressWarnings("unused")
+    private static Agent agentInstance;
+
     private static ClassLoader agentClassLoader;
 
-    private static AgentLogWriter agentLogWriter;
+    private static AgentLogWriter agentLogWriter = new AgentLogWriter();;
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
 
-    public static void premain(String agentArgs, Instrumentation inst) throws Exception {
+    public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
+        agentInstance = new Agent(instrumentation);
+    }
+
+    protected Agent() {
+        agentInstance = this;
+    }
+
+    private Agent(Instrumentation instrumentation) throws Exception {
         deleteAllTraceFiles();
-        agentLogWriter = new AgentLogWriter();
 
         URL jarUrl = getJavaagentUrlFromVmArguments();
         agentClassLoader = new AgentClassLoader(jarUrl);
@@ -43,7 +54,7 @@ public class Agent {
 
         Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
         ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor().newInstance();
-        inst.addTransformer(classFileTransformer);
+        instrumentation.addTransformer(classFileTransformer);
 
         Thread.currentThread().setContextClassLoader(previousClassLoader);
     }
@@ -68,15 +79,19 @@ public class Agent {
         }
     }
 
-    private static URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
+    protected URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
         // find the agent location
         String javaagent = null;
-        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+        for (String argument : getVmArguments()) {
             if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
                 javaagent = argument.substring(JAVAAGENT_VM_PREFIX.length());
             }
             //TODO: remove agent parameters after =
         }
         return new URL("file:" + javaagent);
+    }
+
+    protected List<String> getVmArguments() {
+        return ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 }
