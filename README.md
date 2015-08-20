@@ -54,7 +54,15 @@ or try to run the sample application with the integrated Exec Maven Plugin:
 
 1. Add this at the bottom of `$JBOSS_HOME/bin/standalone.conf`:
 
-        JAVA_OPTS="$JAVA_OPTS -javaagent:/tmp/modjprof-agent.jar -Xbootclasspath/p:/tmp/modjprof-agent.jar -Djboss.modules.system.pkgs=ch.puzzle.modjprof.agent"
+        # configure java agent
+        JAVA_OPTS="$JAVA_OPTS -javaagent:/tmp/modjprof-agent.jar"
+        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:/tmp/modjprof-agent.jar"
+        JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=ch.puzzle.modjprof.agent"
+        # configure logging
+        JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-2.0.0.Final.jar"
+        JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.logmanager"
+
 
 #### Tomcat
 1. Copy the agent and all its dependencies to `/tmp`:
