@@ -12,6 +12,8 @@
 package ch.puzzle.modjprof.agent;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
 import java.net.URL;
@@ -41,7 +43,6 @@ public class AgentTest {
         URL agentUrl = agent.getJavaagentUrlFromVmArguments();
 
         //then
-        System.err.println(agentUrl);
         assertThat(agentUrl, Matchers.is(new URL("file:" + agentLocation)));
     }
 
@@ -58,10 +59,21 @@ public class AgentTest {
         URL agentUrl = agent.getJavaagentUrlFromVmArguments();
 
         //then
-        System.err.println(agentUrl);
-        assertThat(agentUrl, Matchers.is(new URL("file:" + agentLocation)));
+        assertThat(agentUrl, is(new URL("file:" + agentLocation)));
     }
 
+    @Test
+    public void shouldGetNoJavaagentUrlFromVmArguments() throws Exception {
+        //given
+        List<String> ret = buildVmArguments(null);
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        URL agentUrl = agent.getJavaagentUrlFromVmArguments();
+
+        //then
+        assertThat(agentUrl, is(nullValue()));
+    }
 
     private List<String> buildVmArguments(String agentLocation) {
         return buildVmArguments(agentLocation, null);
@@ -71,7 +83,12 @@ public class AgentTest {
         List<String> ret = new ArrayList<String>();
         ret.add("-Dfile.encoding=UTF-8");
         ret.add("-Dch.foo=ch.bar");
-        ret.add("-javaagent:" + agentLocation + (agentArguments == null ? "" : "=" + agentArguments));
+        if (agentLocation != null) {
+            if (agentArguments != null) {
+                agentLocation += "=" + agentArguments;
+            }
+            ret.add("-javaagent:" + agentLocation);
+        }
         ret.add("-verbose:class");
         return ret;
     }

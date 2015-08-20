@@ -67,7 +67,7 @@ public class Agent {
         agentLogWriter.writeExitMethod();
     }
 
-    private static void deleteAllTraceFiles() {
+    private void deleteAllTraceFiles() {
         File[] matchingFiles = (new File(TRC_FILE_DIR)).listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -85,10 +85,11 @@ public class Agent {
         for (String argument : getVmArguments()) {
             if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
                 javaagent = argument.substring(JAVAAGENT_VM_PREFIX.length());
+
+                return new URL("file:" + javaagent.split("=")[0]);
             }
-            //TODO: remove agent parameters after =
         }
-        return new URL("file:" + javaagent);
+        return null;
     }
 
     protected List<String> getVmArguments() {
