@@ -32,11 +32,15 @@ public class Agent {
 
     private static ClassLoader agentClassLoader;
 
-    private static AgentLogWriter agentLogWriter = new AgentLogWriter();;
+    private static AgentLogWriter agentLogWriter;
+
+    private static AgentConfiguration agentConfiguration;
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
+        agentLogWriter = new AgentLogWriter();
+        agentConfiguration = new AgentConfiguration();
         agentInstance = new Agent(instrumentation);
     }
 
