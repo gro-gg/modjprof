@@ -107,7 +107,7 @@
 				<executions>
 					<execution>
 						<id>properties-copy</id>
-						<phase>compile</phase>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
