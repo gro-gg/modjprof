@@ -11,8 +11,8 @@
  */
 package ch.puzzle.modjprof.agent;
 
-import static ch.puzzle.modjprof.agent.AgentConfiguration.CLASS_FILE_TRANSFORMER_CLASS;
-import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_DIR;
+import static ch.puzzle.modjprof.agent.AgentRuntimeConfiguration.CLASS_FILE_TRANSFORMER_CLASS;
+import static ch.puzzle.modjprof.agent.AgentRuntimeConfiguration.TRC_FILE_DIR;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,13 +34,13 @@ public class Agent {
 
     private static AgentLogWriter agentLogWriter;
 
-    private static AgentConfiguration agentConfiguration;
+    private static AgentRuntimeConfiguration agentConfiguration;
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
         agentLogWriter = new AgentLogWriter();
-        agentConfiguration = new AgentConfiguration();
+        agentConfiguration = new AgentRuntimeConfiguration();
         agentInstance = new Agent(instrumentation);
     }
 

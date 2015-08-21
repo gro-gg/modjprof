@@ -11,7 +11,7 @@
  */
 package ch.puzzle.modjprof.agent;
 
-public class AgentConfiguration {
+public class AgentRuntimeConfiguration {
 
     private static boolean profilerEnabled = true;
 
