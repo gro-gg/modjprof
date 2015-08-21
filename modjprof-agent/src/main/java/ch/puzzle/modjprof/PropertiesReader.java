@@ -10,15 +10,9 @@ import java.util.logging.Logger;
 
 public class PropertiesReader {
 
-    private File propertiesFile;
-
     private final static Logger LOGGER = Logger.getLogger(PropertiesReader.class.getName());
 
-    public PropertiesReader(File propertiesFile) {
-        this.propertiesFile = propertiesFile;
-    }
-
-    public Properties readPropertiesFile() {
+    public static Properties readPropertiesFile(File propertiesFile) {
         Properties properties = new Properties();
         InputStream input = null;
         try {

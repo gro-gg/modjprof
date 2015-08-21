@@ -12,10 +12,10 @@ public class PropertiesReaderTest {
     @Test
     public void shouldReadPropertiesFile() {
         //given
-        PropertiesReader reader = new PropertiesReader(new File("target/modjprof.properties"));
+        File propertiesFile = new File("target/modjprof.properties");
 
         //when
-        Properties properties = reader.readPropertiesFile();
+        Properties properties = PropertiesReader.readPropertiesFile(propertiesFile);
 
         //then
         assertThat("Properties file not found!", properties.containsKey("isProfilerEnabled"));
