@@ -5,15 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 public class PropertiesReader {
 
     private final static Logger LOGGER = Logger.getLogger(PropertiesReader.class.getName());
 
-    public static Properties readPropertiesFile(File propertiesFile) {
-        Properties properties = new Properties();
+    public static AgentProperties readPropertiesFile(File propertiesFile) {
+        AgentProperties properties = new AgentProperties();
         InputStream input = null;
         try {
             input = new FileInputStream(propertiesFile.getPath());
