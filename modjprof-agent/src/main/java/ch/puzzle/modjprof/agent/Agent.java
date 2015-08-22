@@ -85,20 +85,35 @@ public class Agent {
         }
     }
 
-    protected URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
-        // find the agent location
-        String javaagent = null;
-        for (String argument : getVmArguments()) {
-            if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
-                javaagent = argument.substring(JAVAAGENT_VM_PREFIX.length());
+    URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
+        String javaagent;
+        if ((javaagent = getJavaagentWithArgumentsFromVmArguments()) != null) {
+            return new URL("file:" + javaagent.split("=")[0]);
+        }
+        return null;
+    }
 
-                return new URL("file:" + javaagent.split("=")[0]);
+    String getJavaagentArguments() throws MalformedURLException {
+        String javaagent;
+        if ((javaagent = getJavaagentWithArgumentsFromVmArguments()) != null) {
+            String[] split = javaagent.split("=", 2);
+            if (split.length == 2) {
+                return split[1];
             }
         }
         return null;
     }
 
-    protected List<String> getVmArguments() {
+    String getJavaagentWithArgumentsFromVmArguments() throws MalformedURLException {
+        for (String argument : getVmArguments()) {
+            if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
+                return argument.substring(JAVAAGENT_VM_PREFIX.length());
+            }
+        }
+        return null;
+    }
+
+    List<String> getVmArguments() {
         return ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 }

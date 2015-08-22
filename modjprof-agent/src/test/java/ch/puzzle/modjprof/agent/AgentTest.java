@@ -33,6 +33,21 @@ public class AgentTest {
     Agent agent = new Agent();
 
     @Test
+    public void shouldGetJavaagentWithArguments() throws Exception {
+        //given
+        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
+        String agentArguments = "enable=true";
+        List<String> ret = buildVmArguments(agentLocation, agentArguments);
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        String javaagent = agent.getJavaagentWithArgumentsFromVmArguments();
+
+        //then
+        assertThat(javaagent, is(agentLocation + "=" + agentArguments));
+    }
+
+    @Test
     public void shouldGetJavaagentUrlFromVmArguments() throws Exception {
         //given
         String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
@@ -51,7 +66,6 @@ public class AgentTest {
         //given
         String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
         String agentArguments = "enable=true";
-
         List<String> ret = buildVmArguments(agentLocation, agentArguments);
         when(agent.getVmArguments()).thenReturn(ret);
 
@@ -75,6 +89,35 @@ public class AgentTest {
         assertThat(agentUrl, is(nullValue()));
     }
 
+    @Test
+    public void shouldGetJavaagentArguments() throws Exception {
+        //given
+        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
+        String agentArguments = "enable=true";
+        List<String> ret = buildVmArguments(agentLocation, agentArguments);
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        String arguments = agent.getJavaagentArguments();
+
+        //then
+        assertThat(arguments, is(agentArguments));
+    }
+
+    @Test
+    public void shouldGetNoJavaagentArguments() throws Exception {
+        //given
+        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
+        List<String> ret = buildVmArguments(agentLocation);
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        String arguments = agent.getJavaagentArguments();
+
+        //then
+        assertThat(arguments, is(nullValue()));
+    }
+
     private List<String> buildVmArguments(String agentLocation) {
         return buildVmArguments(agentLocation, null);
     }
@@ -92,5 +135,4 @@ public class AgentTest {
         ret.add("-verbose:class");
         return ret;
     }
-
 }
