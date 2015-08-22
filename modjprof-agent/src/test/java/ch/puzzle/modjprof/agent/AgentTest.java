@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,10 +119,10 @@ public class AgentTest {
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
-        File location = agent.getConfigFileLocation();
+        String location = agent.getConfigFileLocation();
 
         //then
-        assertThat(location, is(new File("/tmp/modjprof.properties")));
+        assertThat(location, is("/tmp/modjprof.properties"));
     }
 
     @Test
@@ -133,20 +132,7 @@ public class AgentTest {
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
-        File location = agent.getConfigFileLocation();
-
-        //then
-        assertThat(location, is(nullValue()));
-    }
-
-    @Test
-    public void shouldNotGetConfigLocationWhenLocationNotExists() throws Exception {
-        //given
-        List<String> ret = buildVmArguments(AGENTLOCATION, "config=/foo/bar");
-        when(agent.getVmArguments()).thenReturn(ret);
-
-        //when
-        File location = agent.getConfigFileLocation();
+        String location = agent.getConfigFileLocation();
 
         //then
         assertThat(location, is(nullValue()));

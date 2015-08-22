@@ -1,6 +1,5 @@
 package ch.puzzle.modjprof.instrumentation;
 
-import java.io.File;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -28,7 +27,7 @@ public class InstrumentationConfiguration {
 
     private Set<String> packagesToInstrument;
 
-    void initialize(File propertiesFile) {
+    void initialize(String propertiesFile) {
         AgentProperties properties = PropertiesReader.readPropertiesFile(propertiesFile);
         packagesToInstrument = properties.getPropertyAsSet("packagesToInstrument");
     }

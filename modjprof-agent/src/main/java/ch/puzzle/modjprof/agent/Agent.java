@@ -59,7 +59,7 @@ public class Agent {
         Thread.currentThread().setContextClassLoader(agentClassLoader);
 
         Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
-        ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor(File.class).newInstance(
+        ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor(String.class).newInstance(
                 getConfigFileLocation());
         instrumentation.addTransformer(classFileTransformer);
 
@@ -86,16 +86,9 @@ public class Agent {
         }
     }
 
-    File getConfigFileLocation() throws MalformedURLException, IOException {
+    String getConfigFileLocation() throws MalformedURLException, IOException {
         AgentProperties properties = AgentProperties.parsePropertiesString(getJavaagentArguments());
-        String location = properties.getProperty("config");
-        if (location != null) {
-            File configFile = new File(location);
-            if (configFile.exists()) {
-                return configFile;
-            }
-        }
-        return null;
+        return properties.getProperty("config");
     }
 
     URL getJavaagentUrlFromVmArguments() throws MalformedURLException {

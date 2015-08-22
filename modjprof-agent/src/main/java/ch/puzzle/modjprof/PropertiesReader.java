@@ -1,6 +1,5 @@
 package ch.puzzle.modjprof;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,14 +10,14 @@ public class PropertiesReader {
 
     private final static Logger LOGGER = Logger.getLogger(PropertiesReader.class.getName());
 
-    public static AgentProperties readPropertiesFile(File propertiesFile) {
+    public static AgentProperties readPropertiesFile(String propertiesFile) {
         AgentProperties properties = new AgentProperties();
         InputStream input = null;
         try {
-            input = new FileInputStream(propertiesFile.getPath());
+            input = new FileInputStream(propertiesFile);
             properties.load(input);
         } catch (FileNotFoundException e) {
-            LOGGER.severe("Properties file " + propertiesFile.getPath() + " not found!");
+            LOGGER.severe("Properties file " + propertiesFile + " not found!");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

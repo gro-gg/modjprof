@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
 import java.util.Set;
 
 import org.junit.Test;
@@ -17,7 +16,7 @@ public class InstrumentationConfigurationTest {
         InstrumentationConfiguration instance = InstrumentationConfiguration.getInstance();
 
         //when
-        instance.initialize(new File("target/modjprof.properties"));
+        instance.initialize("target/modjprof.properties");
         Set<String> packagesToInstrument = instance.getPackagesToInstrument();
 
         //then

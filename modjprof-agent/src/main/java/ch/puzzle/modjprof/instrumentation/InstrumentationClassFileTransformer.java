@@ -16,7 +16,6 @@ import static org.objectweb.asm.Opcodes.ACC_ANNOTATION;
 import static org.objectweb.asm.Opcodes.ACC_ENUM;
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 
-import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -32,7 +31,7 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
 
     private static InstrumentationConfiguration config;
 
-    public InstrumentationClassFileTransformer(File propertiesFile) {
+    public InstrumentationClassFileTransformer(String propertiesFile) {
         config = InstrumentationConfiguration.getInstance();
         config.initialize(propertiesFile);
     }
