@@ -59,9 +59,8 @@ public class Agent {
         Thread.currentThread().setContextClassLoader(agentClassLoader);
 
         Class<?> cls = agentClassLoader.loadClass(CLASS_FILE_TRANSFORMER_CLASS);
-        //TODO: file location from agent args
         ClassFileTransformer classFileTransformer = (ClassFileTransformer) cls.getConstructor(File.class).newInstance(
-                new File("/tmp/modjprof.properties"));
+                getConfigLocation());
         instrumentation.addTransformer(classFileTransformer);
 
         Thread.currentThread().setContextClassLoader(previousClassLoader);

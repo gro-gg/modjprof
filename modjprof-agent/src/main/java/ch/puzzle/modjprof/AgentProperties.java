@@ -12,8 +12,12 @@ public class AgentProperties extends Properties {
     private static final long serialVersionUID = 4663434891809094508L;
 
     public Set<String> getPropertyAsSet(String key) {
-        String[] split = getProperty(key).split(",");
-        return new HashSet<String>(Arrays.asList(split));
+        String property = getProperty(key);
+        if (property != null) {
+            String[] split = property.split(",");
+            return new HashSet<String>(Arrays.asList(split));
+        }
+        return new HashSet<String>();
     }
 
     public boolean getPropertyAsBoolean(String key) {

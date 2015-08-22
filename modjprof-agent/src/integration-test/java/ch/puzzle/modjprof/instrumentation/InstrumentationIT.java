@@ -32,7 +32,7 @@ public class InstrumentationIT extends BaseIntegrationTest {
 
     @Test
     public void testExecute() throws IOException, InterruptedException {
-        assertThat(execute(new String[] {}), is(equalTo(0)));
+        assertThat(execute(new String[] {}, "config=target/modjprof.properties"), is(equalTo(0)));
 
         long threadId = Thread.currentThread().getId();
         File file = new File(getClass().getClassLoader().getResource(EXPECTED_TRC_FILE).getFile());
