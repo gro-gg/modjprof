@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +127,7 @@ public class AgentTest {
     }
 
     @Test
-    public void shouldNotGetConfigLocationWhenLocationNotSet() throws Exception {
+    public void shouldGetDefaultConfigLocationWhenLocationNotSet() throws Exception {
         //given
         List<String> ret = buildVmArguments(AGENTLOCATION, "enable=true");
         when(agent.getVmArguments()).thenReturn(ret);
@@ -135,7 +136,9 @@ public class AgentTest {
         String location = agent.getConfigFileLocation();
 
         //then
-        assertThat(location, is(nullValue()));
+        String dir = new File(AGENTLOCATION).getParent();
+        File defaultPropertyFile = new File(dir, "modjprof.properties");
+        assertThat(location, is(defaultPropertyFile.getCanonicalPath()));
     }
 
     private List<String> buildVmArguments(String agentLocation) {

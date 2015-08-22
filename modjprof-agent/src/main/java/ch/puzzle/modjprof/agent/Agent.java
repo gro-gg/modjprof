@@ -41,6 +41,8 @@ public class Agent {
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
 
+    private static final String DEFAULT_PROPERTY_FILE = "modjprof.properties";
+
     private final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
@@ -94,19 +96,31 @@ public class Agent {
         String property = properties.getProperty("config");
         if (property == null) {
             LOGGER.warning("No config file location found in agent arguments! Use -javaagent:<agent.jar>=config=<config.properties>");
+            String dir = new File(getJavaagentLocationFromVmArguments()).getParent();
+            File defaultPropertyFile = new File(dir, DEFAULT_PROPERTY_FILE);
+            property = defaultPropertyFile.getCanonicalPath();
+            LOGGER.warning("Trying to load default config file " + property);
         }
         return property;
     }
 
     URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
         String javaagent;
-        if ((javaagent = getJavaagentWithArgumentsFromVmArguments()) != null) {
-            return new URL("file:" + javaagent.split("=")[0]);
+        if ((javaagent = getJavaagentLocationFromVmArguments()) != null) {
+            return new URL("file:" + javaagent);
         }
         return null;
     }
 
-    String getJavaagentArguments() throws MalformedURLException {
+    String getJavaagentLocationFromVmArguments() {
+        String javaagent;
+        if ((javaagent = getJavaagentWithArgumentsFromVmArguments()) != null) {
+            return javaagent.split("=")[0];
+        }
+        return null;
+    }
+
+    String getJavaagentArguments() {
         String javaagent;
         if ((javaagent = getJavaagentWithArgumentsFromVmArguments()) != null) {
             String[] split = javaagent.split("=", 2);
@@ -117,7 +131,7 @@ public class Agent {
         return null;
     }
 
-    String getJavaagentWithArgumentsFromVmArguments() throws MalformedURLException {
+    String getJavaagentWithArgumentsFromVmArguments() {
         for (String argument : getVmArguments()) {
             if (argument.startsWith(JAVAAGENT_VM_PREFIX)) {
                 return argument.substring(JAVAAGENT_VM_PREFIX.length());
