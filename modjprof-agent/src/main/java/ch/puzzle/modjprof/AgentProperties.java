@@ -24,9 +24,11 @@ public class AgentProperties extends Properties {
         return Boolean.parseBoolean(getProperty(key));
     }
 
-    public static AgentProperties parsePropertiesString(String str) throws IOException {
+    public static AgentProperties parsePropertiesString(String propertiesString) throws IOException {
         AgentProperties properties = new AgentProperties();
-        properties.load(new StringReader(str));
+        if (propertiesString != null) {
+            properties.load(new StringReader(propertiesString));
+        }
         return properties;
     }
 }

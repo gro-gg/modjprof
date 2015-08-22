@@ -23,6 +23,7 @@ import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ch.puzzle.modjprof.AgentProperties;
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
@@ -39,6 +40,8 @@ public class Agent {
     private static AgentRuntimeConfiguration agentConfiguration;
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
+
+    private final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
         agentLogWriter = new AgentLogWriter();
@@ -88,7 +91,11 @@ public class Agent {
 
     String getConfigFileLocation() throws MalformedURLException, IOException {
         AgentProperties properties = AgentProperties.parsePropertiesString(getJavaagentArguments());
-        return properties.getProperty("config");
+        String property = properties.getProperty("config");
+        if (property == null) {
+            LOGGER.warning("No config file location found in agent arguments! Use -javaagent:<agent.jar>=config=<config.properties>");
+        }
+        return property;
     }
 
     URL getJavaagentUrlFromVmArguments() throws MalformedURLException {
