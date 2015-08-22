@@ -20,7 +20,7 @@ public class AgentProperties extends Properties {
         return Boolean.parseBoolean(getProperty(key));
     }
 
-    static AgentProperties parsePropertiesString(String str) throws IOException {
+    public static AgentProperties parsePropertiesString(String str) throws IOException {
         AgentProperties properties = new AgentProperties();
         properties.load(new StringReader(str));
         return properties;

@@ -16,6 +16,7 @@ import static ch.puzzle.modjprof.agent.AgentRuntimeConfiguration.TRC_FILE_DIR;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
@@ -23,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import ch.puzzle.modjprof.AgentProperties;
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
 
 public class Agent {
@@ -83,6 +85,18 @@ public class Agent {
         for (int i = 0; i < matchingFiles.length; i++) {
             matchingFiles[i].delete();
         }
+    }
+
+    File getConfigLocation() throws MalformedURLException, IOException {
+        AgentProperties properties = AgentProperties.parsePropertiesString(getJavaagentArguments());
+        String location = properties.getProperty("config");
+        if (location != null) {
+            File configFile = new File(location);
+            if (configFile.exists()) {
+                return configFile;
+            }
+        }
+        return null;
     }
 
     URL getJavaagentUrlFromVmArguments() throws MalformedURLException {

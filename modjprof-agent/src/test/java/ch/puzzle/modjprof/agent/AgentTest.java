@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,51 +30,48 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AgentTest {
 
+    private static final String ARGUMENTS = "enable=true\nconfig=/tmp/modjprof.properties";
+    private static final String AGENTLOCATION = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
+
     @Spy
     Agent agent = new Agent();
 
     @Test
     public void shouldGetJavaagentWithArguments() throws Exception {
-        //given
-        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
-        String agentArguments = "enable=true";
-        List<String> ret = buildVmArguments(agentLocation, agentArguments);
+        List<String> ret = buildVmArguments(AGENTLOCATION, ARGUMENTS);
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
         String javaagent = agent.getJavaagentWithArgumentsFromVmArguments();
 
         //then
-        assertThat(javaagent, is(agentLocation + "=" + agentArguments));
+        assertThat(javaagent, is(AGENTLOCATION + "=" + ARGUMENTS));
     }
 
     @Test
     public void shouldGetJavaagentUrlFromVmArguments() throws Exception {
         //given
-        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
-        List<String> ret = buildVmArguments(agentLocation);
+        List<String> ret = buildVmArguments(AGENTLOCATION);
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
         URL agentUrl = agent.getJavaagentUrlFromVmArguments();
 
         //then
-        assertThat(agentUrl, Matchers.is(new URL("file:" + agentLocation)));
+        assertThat(agentUrl, Matchers.is(new URL("file:" + AGENTLOCATION)));
     }
 
     @Test
     public void shouldGetJavaagentUrlFromVmArgumentsWithAgentArguments() throws Exception {
         //given
-        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
-        String agentArguments = "enable=true";
-        List<String> ret = buildVmArguments(agentLocation, agentArguments);
+        List<String> ret = buildVmArguments(AGENTLOCATION, ARGUMENTS);
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
         URL agentUrl = agent.getJavaagentUrlFromVmArguments();
 
         //then
-        assertThat(agentUrl, is(new URL("file:" + agentLocation)));
+        assertThat(agentUrl, is(new URL("file:" + AGENTLOCATION)));
     }
 
     @Test
@@ -92,23 +90,20 @@ public class AgentTest {
     @Test
     public void shouldGetJavaagentArguments() throws Exception {
         //given
-        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
-        String agentArguments = "enable=true";
-        List<String> ret = buildVmArguments(agentLocation, agentArguments);
+        List<String> ret = buildVmArguments(AGENTLOCATION, ARGUMENTS);
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
         String arguments = agent.getJavaagentArguments();
 
         //then
-        assertThat(arguments, is(agentArguments));
+        assertThat(arguments, is(ARGUMENTS));
     }
 
     @Test
     public void shouldGetNoJavaagentArguments() throws Exception {
         //given
-        String agentLocation = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
-        List<String> ret = buildVmArguments(agentLocation);
+        List<String> ret = buildVmArguments(AGENTLOCATION);
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
@@ -116,6 +111,45 @@ public class AgentTest {
 
         //then
         assertThat(arguments, is(nullValue()));
+    }
+
+    @Test
+    public void shouldGetConfigLocation() throws Exception {
+        //given
+        List<String> ret = buildVmArguments(AGENTLOCATION, ARGUMENTS);
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        File location = agent.getConfigLocation();
+
+        //then
+        assertThat(location, is(new File("/tmp/modjprof.properties")));
+    }
+
+    @Test
+    public void shouldNotGetConfigLocationWhenLocationNotSet() throws Exception {
+        //given
+        List<String> ret = buildVmArguments(AGENTLOCATION, "enable=true");
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        File location = agent.getConfigLocation();
+
+        //then
+        assertThat(location, is(nullValue()));
+    }
+
+    @Test
+    public void shouldNotGetConfigLocationWhenLocationNotExists() throws Exception {
+        //given
+        List<String> ret = buildVmArguments(AGENTLOCATION, "config=/foo/bar");
+        when(agent.getVmArguments()).thenReturn(ret);
+
+        //when
+        File location = agent.getConfigLocation();
+
+        //then
+        assertThat(location, is(nullValue()));
     }
 
     private List<String> buildVmArguments(String agentLocation) {
