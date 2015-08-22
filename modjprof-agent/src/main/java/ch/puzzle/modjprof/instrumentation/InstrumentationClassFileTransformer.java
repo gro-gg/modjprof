@@ -16,6 +16,7 @@ import static org.objectweb.asm.Opcodes.ACC_ANNOTATION;
 import static org.objectweb.asm.Opcodes.ACC_ENUM;
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 
+import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -29,23 +30,36 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
 
     private static Logger LOGGER = Logger.getLogger(InstrumentationClassFileTransformer.class.getName());
 
+    private static InstrumentationConfiguration config;
+
+    public InstrumentationClassFileTransformer(File propertiesFile) {
+        config = InstrumentationConfiguration.getInstance();
+        config.initialize(propertiesFile);
+    }
+
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        if (!className.startsWith("ch/puzzle/modjprof") && className.startsWith("ch/puzzle") || className.startsWith("najs")
-                || className.startsWith("org/jboss/as/quickstarts/greeter/web")) {
-            try {
-                ClassReader classReader = new ClassReader(classfileBuffer);
-                if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
-                    LOGGER.fine("instrumenting class " + className);
-                    ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
-                    ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
-                    classReader.accept(classVisitor, 0);
-                    return classWriter.toByteArray();
+        // do not instrument yourself
+        if (!className.startsWith("ch/puzzle/modjprof")) {
+            for (String packageToInstrument : config.getPackagesToInstrument()) {
+                if (className.startsWith(packageToInstrument.replaceAll("\\.", "/"))) {
+                    try {
+                        ClassReader classReader = new ClassReader(classfileBuffer);
+                        // do not instrument interfaces, enums and annotations
+                        if ((classReader.getAccess() & (ACC_INTERFACE + ACC_ENUM + ACC_ANNOTATION)) == 0) {
+                            LOGGER.fine("instrumenting class " + className);
+                            ClassWriter classWriter = new AgentClassWriter(classReader, COMPUTE_FRAMES, loader);
+                            ClassVisitor classVisitor = new MethodSelectorClassVisitor(classWriter, className);
+                            classReader.accept(classVisitor, 0);
+                            return classWriter.toByteArray();
+                        }
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                    return classfileBuffer;
                 }
-            } catch (Throwable e) {
-                e.printStackTrace();
             }
         }
         return classfileBuffer;
