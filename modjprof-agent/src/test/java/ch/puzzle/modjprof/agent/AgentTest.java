@@ -120,7 +120,7 @@ public class AgentTest {
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
-        File location = agent.getConfigLocation();
+        File location = agent.getConfigFileLocation();
 
         //then
         assertThat(location, is(new File("/tmp/modjprof.properties")));
@@ -133,7 +133,7 @@ public class AgentTest {
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
-        File location = agent.getConfigLocation();
+        File location = agent.getConfigFileLocation();
 
         //then
         assertThat(location, is(nullValue()));
@@ -146,7 +146,7 @@ public class AgentTest {
         when(agent.getVmArguments()).thenReturn(ret);
 
         //when
-        File location = agent.getConfigLocation();
+        File location = agent.getConfigFileLocation();
 
         //then
         assertThat(location, is(nullValue()));

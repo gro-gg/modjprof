@@ -31,7 +31,9 @@ public class ClassLoaderIT extends BaseIntegrationTest {
 
     @Test
     public void shouldLoadClassesFromDiffrentFiles() throws IOException, InterruptedException {
-        BufferedReader reader = executeAndReadOutput(new String[] { "-verbose:class" }, "config=target/modjprof.properties");
+        File configFile = new File("target/modjprof.properties");
+        String agentArguments = "config=" + configFile.getCanonicalPath();
+        BufferedReader reader = executeAndReadOutput(new String[] { "-verbose:class" }, agentArguments);
         List<String> classLoadedFrom = new ArrayList<String>();
         String line;
         while ((line = reader.readLine()) != null) {
