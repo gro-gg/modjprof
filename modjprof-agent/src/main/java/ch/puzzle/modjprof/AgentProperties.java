@@ -1,5 +1,7 @@
 package ch.puzzle.modjprof;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -18,4 +20,9 @@ public class AgentProperties extends Properties {
         return Boolean.parseBoolean(getProperty(key));
     }
 
+    static AgentProperties parsePropertiesString(String str) throws IOException {
+        AgentProperties properties = new AgentProperties();
+        properties.load(new StringReader(str));
+        return properties;
+    }
 }
