@@ -42,4 +42,12 @@ public class AgentControl {
     public void listTraceFiles() {
 
     }
+
+    public void enableThread(long threadId) {
+        LOGGER.info("enableThread(" + threadId + ") called");
+    }
+
+    public void disableThread(long threadId) {
+        LOGGER.info("disableThread(" + threadId + ") called");
+    }
 }
