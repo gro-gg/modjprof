@@ -57,11 +57,13 @@ public class BaseIntegrationTest {
         File agentJar = new File(AGENT_JAR_LOCATION);
         List<String> command = new ArrayList<String>();
         command.add("java");
-        command.add("-javaagent:" + agentJar.getCanonicalPath());
+        StringBuilder sb = new StringBuilder();
+        sb.append("-javaagent:" + agentJar.getCanonicalPath());
         if (agentArgs != null) {
-            command.add("=");
-            command.add(agentArgs);
+            sb.append("=");
+            sb.append(agentArgs);
         }
+        command.add(sb.toString());
         command.addAll(Arrays.asList(args));
         command.add("-jar");
         command.add(applicationJar.getCanonicalPath());

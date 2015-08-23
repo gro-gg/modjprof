@@ -4,25 +4,27 @@ import java.util.logging.Logger;
 
 public class AgentControl {
 
-    private static final AgentControl instance;
-
     private final static Logger LOGGER = Logger.getLogger(AgentControl.class.getName());
 
-    static {
-        instance = new AgentControl();
+    /**
+     * lazy thread safe singleton
+     */
+    private static final class LazyHolder {
+        private static final AgentControl INSTANCE = new AgentControl();
     }
-
+    private AgentControl() {
+    }
     public static AgentControl getInstance() {
-        return instance;
+        return LazyHolder.INSTANCE;
     }
 
     public void startAgent() {
-        AgentConfiguration.enableProfiler();
+        AgentConfiguration.getInstance().enableProfiler();
         LOGGER.info("startAgent() called");
     }
 
     public void stopAgent() {
-        AgentConfiguration.disableProfiler();
+        AgentConfiguration.getInstance().disableProfiler();
         LOGGER.info("stopAgent() called");
     }
 

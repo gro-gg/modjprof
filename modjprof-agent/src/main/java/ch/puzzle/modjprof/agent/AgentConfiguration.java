@@ -11,9 +11,27 @@
  */
 package ch.puzzle.modjprof.agent;
 
+import java.util.logging.Logger;
+
+import ch.puzzle.modjprof.AgentProperties;
+import ch.puzzle.modjprof.PropertiesReader;
+
 public class AgentConfiguration {
 
-    private static boolean profilerEnabled = true;
+    private final static Logger LOGGER = Logger.getLogger(AgentConfiguration.class.getName());
+    static {
+        LOGGER.info("class loaded by " + AgentConfiguration.class.getClassLoader());
+    }
+
+    /**
+     * eager thread safe singleton
+     */
+    private static final AgentConfiguration INSTANCE = new AgentConfiguration();
+    private AgentConfiguration() {
+    }
+    public static AgentConfiguration getInstance() {
+        return INSTANCE;
+    }
 
     public static final String TRC_FILE_DIR = "/tmp/";
 
@@ -21,15 +39,24 @@ public class AgentConfiguration {
 
     public static final String CLASS_FILE_TRANSFORMER_CLASS = "ch.puzzle.modjprof.instrumentation.InstrumentationClassFileTransformer";
 
-    public static void enableProfiler() {
+    private static boolean profilerEnabled = false;
+
+    void initialize(String propertiesFile) {
+        if (propertiesFile != null) {
+            AgentProperties properties = PropertiesReader.readPropertiesFile(propertiesFile);
+            profilerEnabled = properties.getPropertyAsBoolean("isProfilerEnabled");
+        }
+    }
+
+    public void enableProfiler() {
         profilerEnabled = true;
     }
 
-    public static void disableProfiler() {
+    public void disableProfiler() {
         profilerEnabled = false;
     }
 
-    public static boolean isProfilerEnabled() {
+    public boolean isProfilerEnabled() {
         return profilerEnabled;
     }
 
