@@ -21,6 +21,65 @@ Build and package the application and run all integration tests:
     mvn clean verify
 
 
+## Java Agent (modjprof-agent)
+### Application Startup with Java Agent
+To start your application with the modjprof java agent use the following JVM options:
+
+        java -javaagent:<modjprof-agent.jar>[=config=<modjprof.properties>]
+
+If no properties file is configured, the file `modjprof.properties` should be in the same directory as the agent. You will find a example config file in the Maven build directory.
+
+### Application Server Startup Settings:
+#### JBoss WildFly (Standalone mode)
+<!-- ### Domain mode-->
+1. Copy the agent and all its dependencies to `/tmp`:
+
+        cp modjprof-agent/target/*.jar /tmp/
+        cp modjprof-agent/target/*.properties /tmp/
+
+1. Add this at the bottom of `$JBOSS_HOME/bin/standalone.conf`:
+
+        # configure java agent
+        JAVA_OPTS="$JAVA_OPTS -javaagent:/tmp/modjprof-agent.jar"
+        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:/tmp/modjprof-agent.jar"
+        # configure logging
+        JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-2.0.0.Final.jar"
+        # add agent and logmanager to JBOSS_MODULES_SYSTEM_PKGS
+        pkgs="ch.puzzle.modjprof.agent,org.jboss.logmanager"
+        if [ "x$JBOSS_MODULES_SYSTEM_PKGS" != "x" ]; then
+          JBOSS_MODULES_SYSTEM_PKGS="${JBOSS_MODULES_SYSTEM_PKGS},"
+        fi
+        JBOSS_MODULES_SYSTEM_PKGS="${JBOSS_MODULES_SYSTEM_PKGS}${pkgs}"
+        JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=${JBOSS_MODULES_SYSTEM_PKGS}"
+
+#### Tomcat
+1. Copy the agent and all its dependencies to `/tmp`:
+
+        cp modjprof-agent/target/*.jar /tmp/
+
+1. Add the following line to `$TOMCAT_HOME/bin/setenv.sh`. You might need to create this file first:
+
+        CATALINA_OPTS="$CATALINA_OPTS -javaagent:/tmp/modjprof-agent.jar"
+
+
+## Control Servlet (modjprof-control)
+The Control Servlet (modjprof-control) can be used to control the agent at runtime.
+
+### Deployment
+1.  Deploy the file `modjprof-control/target/modjprof-control.war` to your Tomcat / WildFly server.
+
+2. Start the Servlet by opening the URL `http://localhost:8080/modjprof-control/` in your browser.
+
+### Usage
+You can send command to the agent by appending the command to the servlet URL
+Actually there are the following commands implemented:
+
+ - **/start**	will start the profiler
+ - **/stop**	will stop the profiler
+
+The Control Servlet will also print a usage page containing links to the commands.
+
 ### Troubleshooting
 You could set the log level to FINE (debug) by adding the path to the `logging.properties` as JVM argument:
 
@@ -43,49 +102,3 @@ or try to run the sample application with the integrated Exec Maven Plugin:
 
     cd modjprof-agent/
     mvn clean package exec:exec
-
-## Java Agent (modjprof-agent)
-### Application Server Startup Settings:
-#### JBoss WildFly (Standalone mode)
-<!-- ### Domain mode-->
-1. Copy the agent and all its dependencies to `/tmp`:
-
-        cp modjprof-agent/target/*.jar /tmp/
-
-1. Add this at the bottom of `$JBOSS_HOME/bin/standalone.conf`:
-
-        # configure java agent
-        JAVA_OPTS="$JAVA_OPTS -javaagent:/tmp/modjprof-agent.jar"
-        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:/tmp/modjprof-agent.jar"
-        JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=ch.puzzle.modjprof.agent"
-        # configure logging
-        JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
-        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-2.0.0.Final.jar"
-        JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.logmanager"
-
-
-#### Tomcat
-1. Copy the agent and all its dependencies to `/tmp`:
-
-        cp modjprof-agent/target/*.jar /tmp/
-
-1. Add the following line to `$TOMCAT_HOME/bin/setenv.sh`. You might need to create this file first:
-
-        CATALINA_OPTS="$CATALINA_OPTS -javaagent:/tmp/modjprof-agent.jar"
-
-## Control Servlet (modjprof-control)
-The Control Servlet (modjprof-control) can be used to control the agent at runtime.
-
-### Deployment
-1.  Deploy the file `modjprof-control/target/modjprof-control.war` to your Tomcat / WildFly server.
-
-2. Start the Servlet by opening the URL `http://localhost:8080/modjprof-control/` in your browser.
-
-### Usage
-You can send command to the agent by appending the command to the servlet URL
-Actually there are the following commands implemented:
-
- - **/start**	will start the profiler
- - **/stop**	will stop the profiler
-
-The Control Servlet will also print a usage page containing links to the commands.
