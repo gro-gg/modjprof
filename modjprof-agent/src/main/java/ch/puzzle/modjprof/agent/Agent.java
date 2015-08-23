@@ -47,7 +47,7 @@ public class Agent {
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
         agentLogWriter = new AgentLogWriter();
-        agentConfiguration = new AgentConfiguration();
+        agentConfiguration = AgentConfiguration.getInstance();
         agentInstance = new Agent(instrumentation);
     }
 
@@ -56,6 +56,7 @@ public class Agent {
     }
 
     private Agent(Instrumentation instrumentation) throws Exception {
+        agentConfiguration.initialize(getConfigFileLocation());
         deleteAllTraceFiles();
 
         URL jarUrl = getJavaagentUrlFromVmArguments();

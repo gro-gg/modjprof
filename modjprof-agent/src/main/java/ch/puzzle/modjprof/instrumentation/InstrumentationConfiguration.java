@@ -16,7 +16,7 @@ public class InstrumentationConfiguration {
     }
 
     /**
-     * thread safe singleton
+     * eager thread safe singleton
      */
     private static final InstrumentationConfiguration INSTANCE = new InstrumentationConfiguration();
     private InstrumentationConfiguration() {

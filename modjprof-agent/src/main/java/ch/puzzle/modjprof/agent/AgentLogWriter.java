@@ -22,7 +22,7 @@ public class AgentLogWriter {
     }
 
     private void writeMethodCallLine(String flowPattern, String methodSignature) {
-        if (AgentConfiguration.isProfilerEnabled()) {
+        if (AgentConfiguration.getInstance().isProfilerEnabled()) {
             long threadId = Thread.currentThread().getId();
             PrintWriter writer = null;
             try {
