@@ -1,6 +1,6 @@
 package ch.puzzle.modjprof.agent;
 
-import static ch.puzzle.modjprof.agent.AgentRuntimeConfiguration.TRC_FILE;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,7 +22,7 @@ public class AgentLogWriter {
     }
 
     private void writeMethodCallLine(String flowPattern, String methodSignature) {
-        if (AgentRuntimeConfiguration.isProfilerEnabled()) {
+        if (AgentConfiguration.isProfilerEnabled()) {
             long threadId = Thread.currentThread().getId();
             PrintWriter writer = null;
             try {

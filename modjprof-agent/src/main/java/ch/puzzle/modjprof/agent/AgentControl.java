@@ -17,12 +17,12 @@ public class AgentControl {
     }
 
     public void startAgent() {
-        AgentRuntimeConfiguration.enableProfiler();
+        AgentConfiguration.enableProfiler();
         LOGGER.info("startAgent() called");
     }
 
     public void stopAgent() {
-        AgentRuntimeConfiguration.disableProfiler();
+        AgentConfiguration.disableProfiler();
         LOGGER.info("stopAgent() called");
     }
 
