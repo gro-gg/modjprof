@@ -33,8 +33,8 @@ public class AgentLogWriter {
     }
 
     private void writeMethodCallLine(String flowPattern, String methodSignature) {
-        if (AgentConfiguration.getInstance().isProfilerEnabled()) {
-            long threadId = Thread.currentThread().getId();
+        long threadId = Thread.currentThread().getId();
+        if (AgentConfiguration.getInstance().isProfilerEnabled() || AgentConfiguration.getInstance().isThreadEnabled(threadId)) {
             PrintWriter writer = null;
             try {
                 writer = new PrintWriter(new FileWriter(new File(String.format(TRC_FILE, threadId)), true), true);

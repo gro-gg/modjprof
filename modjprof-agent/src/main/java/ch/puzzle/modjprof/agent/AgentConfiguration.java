@@ -11,6 +11,8 @@
  */
 package ch.puzzle.modjprof.agent;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import ch.puzzle.modjprof.AgentProperties;
@@ -41,6 +43,8 @@ public class AgentConfiguration {
 
     private static boolean profilerEnabled = false;
 
+    private Set<Long> threadsToProfile = new HashSet<Long>();
+
     void initialize(String propertiesFile) {
         if (propertiesFile != null) {
             AgentProperties properties = PropertiesReader.readPropertiesFile(propertiesFile);
@@ -58,6 +62,18 @@ public class AgentConfiguration {
 
     public boolean isProfilerEnabled() {
         return profilerEnabled;
+    }
+
+    public void addThread(long threadId) {
+        threadsToProfile.add(threadId);
+    }
+
+    public void removeThread(long threadId) {
+        threadsToProfile.remove(threadId);
+    }
+
+    public boolean isThreadEnabled(long threadId) {
+        return threadsToProfile.contains(threadId);
     }
 
 }

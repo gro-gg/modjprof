@@ -44,10 +44,12 @@ public class AgentControl {
     }
 
     public void enableThread(long threadId) {
+        AgentConfiguration.getInstance().addThread(threadId);
         LOGGER.info("enableThread(" + threadId + ") called");
     }
 
     public void disableThread(long threadId) {
+        AgentConfiguration.getInstance().removeThread(threadId);
         LOGGER.info("disableThread(" + threadId + ") called");
     }
 }
