@@ -57,6 +57,7 @@ If no properties file is configured, the file `modjprof.properties` should be in
 1. Copy the agent and all its dependencies to `/tmp`:
 
         cp modjprof-agent/target/*.jar /tmp/
+        cp modjprof-agent/target/*.properties /tmp/
 
 1. Add the following line to `$TOMCAT_HOME/bin/setenv.sh`. You might need to create this file first:
 
@@ -69,7 +70,7 @@ The Control Servlet (modjprof-control) can be used to control the agent at runti
 ### Deployment
 1.  Deploy the file `modjprof-control/target/modjprof-control.war` to your Tomcat / WildFly server.
 
-2. Start the Servlet by opening the URL `http://localhost:8080/modjprof-control/` in your browser.
+1. Start the Servlet by opening the URL `http://localhost:8080/modjprof-control/` in your browser.
 
 ### Usage
 You can send command to the agent by appending the command to the servlet URL
@@ -80,7 +81,21 @@ Actually there are the following commands implemented:
 
 The Control Servlet will also print a usage page containing links to the commands.
 
-### Troubleshooting
+## Servlet Filter
+The Servlet Filter (modjprof-filter) can be used to enable the profiler for a single browser request.
+
+### Deployment
+Because it is not possible to filter a request in another deployment, you have to add the file ModjprofServletFilter.java to your application. The Servlet Filter is also licensed under the Apache License 2.0 to allow this in proprietary applications.
+
+### Usage
+ 1. Disable profiling by setting `isProfilerEnabled = false` in your agent config file or stop a running profiler with the _Control Servlet (modjprof-control)_.
+
+ 1. Add `modjprof` to the User Agent string of your browser. You could use a brower extension like _User Agent Switcher_ for Firefox.
+ https://addons.mozilla.org/en-US/firefox/addon/user-agent-switcher/
+
+ 1. Open your application with your modified user agent browser
+
+## Troubleshooting
 You could set the log level to FINE (debug) by adding the path to the `logging.properties` as JVM argument:
 
     mvn clean verify -Djava.util.logging.config.file=modjprof-agent/target/logging.properties
