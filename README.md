@@ -3,7 +3,8 @@
 This is a small, modular java profiler. It consists of diffrent parts that may be used to profile your application.
 
 - **modjprof-agent**: is the Java Agent that instruments your application
-- **modjprof-control**: is a optional Servler to control the Java Agent (start, stop, ...)
+- **modjprof-control**: is an optional Servlet to control the Java Agent (start, stop, ...)
+- **modjprof-filter**: is an optional Servlet Filter to enable the Java Agent for a single request
 
 
 ## System requirements
@@ -81,7 +82,7 @@ Actually there are the following commands implemented:
 
 The Control Servlet will also print a usage page containing links to the commands.
 
-## Servlet Filter
+## Servlet Filter (modjprof-filter)
 The Servlet Filter (modjprof-filter) can be used to enable the profiler for a single browser request.
 
 ### Deployment
