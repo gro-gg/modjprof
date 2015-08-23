@@ -12,6 +12,7 @@
 		<module>sample-servlet</module>
 		<module>modjprof-agent</module>
 		<module>modjprof-control</module>
+		<module>modjprof-filter</module>
 	</modules>
 
 	<properties>
