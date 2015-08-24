@@ -13,6 +13,7 @@
 		<module>modjprof-agent</module>
 		<module>modjprof-control</module>
 		<module>modjprof-filter</module>
+		<module>modjprof-trc2txt</module>
 	</modules>
 
 	<properties>

@@ -3,6 +3,7 @@
 This is a small, modular java profiler. It consists of diffrent parts that may be used to profile your application.
 
 - **modjprof-agent**: is the Java Agent that instruments your application
+- **modjprof-trc2txt**: is a tool to convert the trace file into a human readable format
 - **modjprof-control**: is an optional Servlet to control the Java Agent (start, stop, ...)
 - **modjprof-filter**: is an optional Servlet Filter to enable the Java Agent for a single request
 
@@ -64,6 +65,38 @@ If no properties file is configured, the file `modjprof.properties` should be in
 
         CATALINA_OPTS="$CATALINA_OPTS -javaagent:/tmp/modjprof-agent.jar"
 
+## Trace File Analysis (modjprof-trc2txt)
+The tool modjprof-trc2txt is copied from rsjprof, a profiler from Puzzle ITC GmbH written in C. modjprof-trc2txt reads standard input, groups same calls, summarizes the execution time and writes the result in a human readable format to standard output.
+
+ 1. Locate the converter and copy it to `/tmp/`
+
+        find -name modjprof-trc2txt -type f -exec cp '{}' /tmp \;
+
+ 1. Convert the trace file (replace `<thread-id>` with the correct thread id)
+
+        cd /tmp
+        ./modjprof-trc2txt < modjprof_<thread-id>.trc > modjprof_<thread-id>.txt
+
+ 1. Anaylze the `.txt` file with a editor with folding support (e.g. vim). You could find how to open close the folds with `vim` on the following page: `http://vim.wikia.com/wiki/Folding`
+ (`zM` will close all filds, `za` will toggle the fold on the cursor level, ...)
+
+        vim modjprof_<thread-id>.txt
+
+Now you will find something like the following:
+
+        total: 8.043607 (100%)  self: 2.426052  count: 1  avg: 8.043607  ch.puzzle.sample.ClassUnderTest.main(java.lang.String[])
+            total: 5.617555 (100%)  self: 2.777667  count: 2  avg: 2.808777  ch.puzzle.sample.ClassA.run()
+                total: 2.396781 (84%)  self: 1.733192  count: 6  avg: 0.399463  ch.puzzle.sample.ClassB.run()
+                    total: 0.663589 (100%)  self: 0.663589  count: 6  avg: 0.110598  ch.puzzle.sample.ClassC.run(java.lang.String, int, long)
+                total: 0.443107 (16%)  self: 0.443107  count: 4  avg: 0.110776  ch.puzzle.sample.AbstractClassB.concreteMethodInAbstractClass()
+
+ - Each line represents one or multiple calls to the method at the end of the line.
+ - The vertical levels represents the call stack. An indented line means, that the method was called in the method from the line above.
+ - The value `total` defines how many milliseconds [ms] spent in total in the whole method.
+ - The percent value means how many time of the current method was spent in this method.
+ - The value `self` defines how many milliseconds [ms] spent in the method without the calls to other methods.
+ - The `count` defines how many times the method was called within the current method.
+ - The value `avg` defines how many milliseconds [ms] spent in average per call (total / count).
 
 ## Control Servlet (modjprof-control)
 The Control Servlet (modjprof-control) can be used to control the agent at runtime.
