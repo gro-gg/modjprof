@@ -6,7 +6,8 @@ This is a small, modular java profiler. It consists of diffrent parts that may b
 - **modjprof-trc2txt**: is a tool to convert the trace file into a human readable format
 - **modjprof-control**: is an optional Servlet to control the Java Agent (start, stop, ...)
 - **modjprof-filter**: is an optional Servlet Filter to enable the Java Agent for a single request
-
+- _sample-application_: is a sample application, used for the integration tests
+- _sample-servlet_: is a sample servlet, written for testing purposes
 
 ## System requirements
  1. This profiler is build to run on **GNU/Linux** systems. Feel free to modify it to support multiple platforms.
@@ -116,7 +117,7 @@ Actually there are the following commands implemented:
 The Control Servlet will also print a usage page containing links to the commands.
 
 ## Servlet Filter (modjprof-filter)
-The Servlet Filter (modjprof-filter) can be used to enable the profiler for a single browser request.
+The Servlet Filter (modjprof-filter) can be used to enable the profiler for a single browser request, even if the profiler is actually disabled.
 
 ### Deployment
 Because it is not possible to filter a request in another deployment, you have to add the file ModjprofServletFilter.java to your application. The Servlet Filter is also licensed under the Apache License 2.0 to allow this in proprietary applications.
