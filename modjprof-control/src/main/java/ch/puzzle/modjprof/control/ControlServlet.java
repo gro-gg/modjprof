@@ -11,6 +11,7 @@
  */
 package ch.puzzle.modjprof.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -62,10 +63,6 @@ public class ControlServlet extends HttpServlet {
         }
     }
 
-    private void listFiles(PrintWriter out) {
-        invokeAgent("listFiles", out);
-    }
-
     private void startProfiler(PrintWriter out) {
         invokeAgent("startAgent", out);
         out.println("<p>Profiler started!</p>");
@@ -76,13 +73,29 @@ public class ControlServlet extends HttpServlet {
         out.println("<p>Profiler stopped!</p>");
     }
 
-    private void invokeAgent(String method, PrintWriter out) {
+    private void listFiles(PrintWriter out) {
+        File[] files = (File[]) invokeAgent("listTraceFiles", out);
+        if (files.length == 0) {
+            out.println("<p>No files found!</p>");
+            return;
+        }
+        out.println("<p>Found the following trace files:</p>");
+        out.println("<ul>");
+        for (int i = 0; i < files.length; i++) {
+            out.println("<li>");
+            out.println(files[i].getName());
+            out.println("</li>");
+        }
+        out.println("</ul>");
+    }
+
+    private Object invokeAgent(String method, PrintWriter out) {
         try {
             Class<?> c = Class.forName("ch.puzzle.modjprof.agent.AgentControl");
             Method getInstanceMethod = c.getMethod("getInstance");
             Object instance = getInstanceMethod.invoke(null);
-            Method startAgentMethod = c.getMethod(method);
-            startAgentMethod.invoke(instance);
+            Method agentMethod = c.getMethod(method);
+            return agentMethod.invoke(instance);
         } catch (ClassNotFoundException e) {
             printError(e, out);
         } catch (NoSuchMethodException e) {
@@ -96,6 +109,7 @@ public class ControlServlet extends HttpServlet {
         } catch (InvocationTargetException e) {
             printError(e, out);
         }
+        return null;
     }
 
     private void printError(Exception e, PrintWriter out) {
@@ -113,6 +127,7 @@ public class ControlServlet extends HttpServlet {
         out.println("<table border=\"0\"><col width=\"130\">");
         out.println("<tr><td><a href=\"" + baseURI + "start\">/start</a></td><td>will start the profiler</td></tr>");
         out.println("<tr><td><a href=\"" + baseURI + "stop\">/stop</a></td><td>will stop the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "list\">/list</a></td><td>will list all trace files</td></tr>");
         out.println("</table>");
     }
 
