@@ -36,7 +36,7 @@ public class ControlServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             printResponseHeader(out, pathInfo);
-            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), out);
+            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), response, out);
             printResponseFooter(out);
         } finally {
             out.close();
@@ -49,7 +49,7 @@ public class ControlServlet extends HttpServlet {
         return baseURI;
     }
 
-    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, PrintWriter out) {
+    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, HttpServletResponse response, PrintWriter out) {
         if ("/".equals(pathInfo)) {
             printUsage(out, baseURI, false);
         } else if ("/start".equals(pathInfo)) {
@@ -58,6 +58,8 @@ public class ControlServlet extends HttpServlet {
             stopProfiler(out);
         } else if ("/list".equals(pathInfo)) {
             listFiles(out, baseURI);
+        } else if ("/delete".equals(pathInfo)) {
+            deleteFiles(out, baseURI, response);
         } else {
             printUsage(out, baseURI, true);
         }
@@ -80,6 +82,7 @@ public class ControlServlet extends HttpServlet {
             return;
         }
         out.println("<p>Found the following trace files:</p>");
+        out.println("<p><a href=\"" + baseURI + "delete\">delete all !!!</a></p>");
         out.println("<ul>");
         for (int i = 0; i < files.length; i++) {
             try {
@@ -93,6 +96,15 @@ public class ControlServlet extends HttpServlet {
             }
         }
         out.println("</ul>");
+    }
+
+    private void deleteFiles(PrintWriter out, String baseURI, HttpServletResponse response) {
+        invokeAgent("deleteAllTraceFiles", out);
+        try {
+            response.sendRedirect(baseURI);
+        } catch (IOException e) {
+            printError(e, out);
+        }
     }
 
     private Object invokeAgent(String method, PrintWriter out) {

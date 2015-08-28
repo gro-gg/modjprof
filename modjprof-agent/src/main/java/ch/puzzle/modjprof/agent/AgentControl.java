@@ -42,14 +42,19 @@ public class AgentControl {
 
     public File[] listTraceFiles() {
         LOGGER.info("listTraceFiles() called");
-        AgentTraceFileWriter trc = new AgentTraceFileWriter();
-        File[] findAllTraceFiles = trc.findAllTraceFiles();
-        return findAllTraceFiles;
+        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
+        return traceFileWriter.findAllTraceFiles();
     }
 
     public String getTraceFileLocation() {
         LOGGER.info("getTraceFileLocation() called");
         return AgentConfiguration.getInstance().getTraceFileLocation();
+    }
+
+    public void deleteAllTraceFiles() {
+        LOGGER.info("deleteAllTraceFiles() called");
+        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
+        traceFileWriter.deleteAllTraceFiles();
     }
 
     public void enableThread(long threadId) {
