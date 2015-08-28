@@ -57,7 +57,7 @@ public class ControlServlet extends HttpServlet {
         } else if ("/stop".equals(pathInfo)) {
             stopProfiler(out);
         } else if ("/list".equals(pathInfo)) {
-            listFiles(out);
+            listFiles(out, baseURI);
         } else {
             printUsage(out, baseURI, true);
         }
@@ -73,7 +73,7 @@ public class ControlServlet extends HttpServlet {
         out.println("<p>Profiler stopped!</p>");
     }
 
-    private void listFiles(PrintWriter out) {
+    private void listFiles(PrintWriter out, String baseURI) {
         File[] files = (File[]) invokeAgent("listTraceFiles", out);
         if (files.length == 0) {
             out.println("<p>No files found!</p>");
@@ -82,9 +82,15 @@ public class ControlServlet extends HttpServlet {
         out.println("<p>Found the following trace files:</p>");
         out.println("<ul>");
         for (int i = 0; i < files.length; i++) {
-            out.println("<li>");
-            out.println(files[i].getName());
-            out.println("</li>");
+            try {
+                out.println("<li>");
+                String taceFile = files[i].getCanonicalPath();
+                String downloadUrl = baseURI + "downloadfile?file=" + taceFile;
+                out.println("<a href=\"" + downloadUrl + "\"  target=\"_blank\">" + files[i].getName() + "</a>");
+                out.println("</li>");
+            } catch (IOException e) {
+                e.printStackTrace(out);
+            }
         }
         out.println("</ul>");
     }
@@ -159,7 +165,7 @@ public class ControlServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet to control modjprof java agent";
     }
 
 }

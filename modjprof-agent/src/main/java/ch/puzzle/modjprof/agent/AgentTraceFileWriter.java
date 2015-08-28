@@ -61,7 +61,13 @@ public class AgentTraceFileWriter {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                writer.close();
+                try {
+                    if (writer != null) {
+                        writer.close();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
             }
         }
     }

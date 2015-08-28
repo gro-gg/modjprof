@@ -47,6 +47,11 @@ public class AgentControl {
         return findAllTraceFiles;
     }
 
+    public String getTraceFileLocation() {
+        LOGGER.info("getTraceFileLocation() called");
+        return AgentConfiguration.getInstance().getTraceFileLocation();
+    }
+
     public void enableThread(long threadId) {
         AgentConfiguration.getInstance().addThread(threadId);
         LOGGER.info("enableThread(" + threadId + ") called");
