@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import ch.puzzle.modjprof.config.AgentProperties;
+
 public class AgentPropertiesTest {
 
     private static final String ARGUMENTS = "enable=true\nconfig=/tmp/modjprof.properties";

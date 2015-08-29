@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import ch.puzzle.modjprof.AgentProperties;
-import ch.puzzle.modjprof.PropertiesReader;
+import ch.puzzle.modjprof.config.AgentProperties;
+import ch.puzzle.modjprof.config.PropertiesReader;
 
 public class AgentConfiguration {
 

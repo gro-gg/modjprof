@@ -7,6 +7,9 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import ch.puzzle.modjprof.config.AgentProperties;
+import ch.puzzle.modjprof.config.PropertiesReader;
+
 public class PropertiesReaderTest {
 
     @Test

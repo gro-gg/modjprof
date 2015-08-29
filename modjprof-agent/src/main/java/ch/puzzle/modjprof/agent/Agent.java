@@ -23,8 +23,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
 
-import ch.puzzle.modjprof.AgentProperties;
 import ch.puzzle.modjprof.classloader.AgentClassLoader;
+import ch.puzzle.modjprof.config.AgentProperties;
 
 public class Agent {
 
