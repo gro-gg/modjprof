@@ -11,6 +11,7 @@
  */
 package ch.puzzle.modjprof.agent;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 public class AgentControl {
@@ -39,8 +40,21 @@ public class AgentControl {
         LOGGER.info("stopAgent() called");
     }
 
-    public void listTraceFiles() {
+    public File[] listTraceFiles() {
+        LOGGER.info("listTraceFiles() called");
+        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
+        return traceFileWriter.findAllTraceFiles();
+    }
 
+    public String getTraceFileLocation() {
+        LOGGER.info("getTraceFileLocation() called");
+        return AgentConfiguration.getInstance().getTraceFileLocation();
+    }
+
+    public void deleteAllTraceFiles() {
+        LOGGER.info("deleteAllTraceFiles() called");
+        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
+        traceFileWriter.deleteAllTraceFiles();
     }
 
     public void enableThread(long threadId) {

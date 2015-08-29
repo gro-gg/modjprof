@@ -11,6 +11,7 @@
  */
 package ch.puzzle.modjprof.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +36,7 @@ public class ControlServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             printResponseHeader(out, pathInfo);
-            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), out);
+            evaluateCommandAndExecuteIt(pathInfo, getBaseUri(request), response, out);
             printResponseFooter(out);
         } finally {
             out.close();
@@ -48,7 +49,7 @@ public class ControlServlet extends HttpServlet {
         return baseURI;
     }
 
-    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, PrintWriter out) {
+    private void evaluateCommandAndExecuteIt(String pathInfo, String baseURI, HttpServletResponse response, PrintWriter out) {
         if ("/".equals(pathInfo)) {
             printUsage(out, baseURI, false);
         } else if ("/start".equals(pathInfo)) {
@@ -56,14 +57,12 @@ public class ControlServlet extends HttpServlet {
         } else if ("/stop".equals(pathInfo)) {
             stopProfiler(out);
         } else if ("/list".equals(pathInfo)) {
-            listFiles(out);
+            listFiles(out, baseURI);
+        } else if ("/delete".equals(pathInfo)) {
+            deleteFiles(out, baseURI, response);
         } else {
             printUsage(out, baseURI, true);
         }
-    }
-
-    private void listFiles(PrintWriter out) {
-        invokeAgent("listFiles", out);
     }
 
     private void startProfiler(PrintWriter out) {
@@ -76,13 +75,45 @@ public class ControlServlet extends HttpServlet {
         out.println("<p>Profiler stopped!</p>");
     }
 
-    private void invokeAgent(String method, PrintWriter out) {
+    private void listFiles(PrintWriter out, String baseURI) {
+        File[] files = (File[]) invokeAgent("listTraceFiles", out);
+        if (files.length == 0) {
+            out.println("<p>No files found!</p>");
+            return;
+        }
+        out.println("<p>Found the following trace files:</p>");
+        out.println("<p><a href=\"" + baseURI + "delete\">delete all !!!</a></p>");
+        out.println("<ul>");
+        for (int i = 0; i < files.length; i++) {
+            try {
+                out.println("<li>");
+                String taceFile = files[i].getCanonicalPath();
+                String downloadUrl = baseURI + "downloadfile?file=" + taceFile;
+                out.println("<a href=\"" + downloadUrl + "\"  target=\"_blank\">" + files[i].getName() + "</a>");
+                out.println("</li>");
+            } catch (IOException e) {
+                e.printStackTrace(out);
+            }
+        }
+        out.println("</ul>");
+    }
+
+    private void deleteFiles(PrintWriter out, String baseURI, HttpServletResponse response) {
+        invokeAgent("deleteAllTraceFiles", out);
+        try {
+            response.sendRedirect(baseURI);
+        } catch (IOException e) {
+            printError(e, out);
+        }
+    }
+
+    private Object invokeAgent(String method, PrintWriter out) {
         try {
             Class<?> c = Class.forName("ch.puzzle.modjprof.agent.AgentControl");
             Method getInstanceMethod = c.getMethod("getInstance");
             Object instance = getInstanceMethod.invoke(null);
-            Method startAgentMethod = c.getMethod(method);
-            startAgentMethod.invoke(instance);
+            Method agentMethod = c.getMethod(method);
+            return agentMethod.invoke(instance);
         } catch (ClassNotFoundException e) {
             printError(e, out);
         } catch (NoSuchMethodException e) {
@@ -96,6 +127,7 @@ public class ControlServlet extends HttpServlet {
         } catch (InvocationTargetException e) {
             printError(e, out);
         }
+        return null;
     }
 
     private void printError(Exception e, PrintWriter out) {
@@ -113,6 +145,7 @@ public class ControlServlet extends HttpServlet {
         out.println("<table border=\"0\"><col width=\"130\">");
         out.println("<tr><td><a href=\"" + baseURI + "start\">/start</a></td><td>will start the profiler</td></tr>");
         out.println("<tr><td><a href=\"" + baseURI + "stop\">/stop</a></td><td>will stop the profiler</td></tr>");
+        out.println("<tr><td><a href=\"" + baseURI + "list\">/list</a></td><td>will list all trace files</td></tr>");
         out.println("</table>");
     }
 
@@ -144,7 +177,7 @@ public class ControlServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet to control modjprof java agent";
     }
 
 }

@@ -76,4 +76,8 @@ public class AgentConfiguration {
         return threadsToProfile.contains(threadId);
     }
 
+    public String getTraceFileLocation() {
+        return TRC_FILE_DIR;
+    }
+
 }

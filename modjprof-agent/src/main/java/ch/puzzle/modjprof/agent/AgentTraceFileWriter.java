@@ -12,13 +12,32 @@
 package ch.puzzle.modjprof.agent;
 
 import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_DIR;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class AgentLogWriter {
+public class AgentTraceFileWriter {
+
+    protected void deleteAllTraceFiles() {
+        File[] matchingFiles = findAllTraceFiles();
+        for (int i = 0; i < matchingFiles.length; i++) {
+            matchingFiles[i].delete();
+        }
+    }
+
+    protected File[] findAllTraceFiles() {
+        File[] matchingFiles = (new File(TRC_FILE_DIR)).listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().startsWith("modjprof_") && pathname.getName().endsWith(".trc");
+            }
+        });
+        return matchingFiles;
+    }
 
     public void writeEnterMethod(String methodSignature) {
         writeMethodCallLine(">", methodSignature);
@@ -42,7 +61,13 @@ public class AgentLogWriter {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                writer.close();
+                try {
+                    if (writer != null) {
+                        writer.close();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
             }
         }
     }

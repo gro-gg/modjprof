@@ -12,10 +12,8 @@
 package ch.puzzle.modjprof.agent;
 
 import static ch.puzzle.modjprof.agent.AgentConfiguration.CLASS_FILE_TRANSFORMER_CLASS;
-import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_DIR;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
@@ -35,7 +33,7 @@ public class Agent {
 
     private static ClassLoader agentClassLoader;
 
-    private static AgentLogWriter agentLogWriter;
+    private static AgentTraceFileWriter agentTraceFileWriter;
 
     private static AgentConfiguration agentConfiguration;
 
@@ -46,7 +44,7 @@ public class Agent {
     private final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
-        agentLogWriter = new AgentLogWriter();
+        agentTraceFileWriter = new AgentTraceFileWriter();
         agentConfiguration = AgentConfiguration.getInstance();
         agentInstance = new Agent(instrumentation);
     }
@@ -57,7 +55,7 @@ public class Agent {
 
     private Agent(Instrumentation instrumentation) throws Exception {
         agentConfiguration.initialize(getConfigFileLocation());
-        deleteAllTraceFiles();
+        agentTraceFileWriter.deleteAllTraceFiles();
 
         URL jarUrl = getJavaagentUrlFromVmArguments();
         agentClassLoader = new AgentClassLoader(jarUrl);
@@ -73,23 +71,11 @@ public class Agent {
     }
 
     public static void notifyEnterMethod(String methodSignature) {
-        agentLogWriter.writeEnterMethod(methodSignature);
+        agentTraceFileWriter.writeEnterMethod(methodSignature);
     }
 
     public static void notifyExitMethod() {
-        agentLogWriter.writeExitMethod();
-    }
-
-    private void deleteAllTraceFiles() {
-        File[] matchingFiles = (new File(TRC_FILE_DIR)).listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().startsWith("modjprof_") && pathname.getName().endsWith(".trc");
-            }
-        });
-        for (int i = 0; i < matchingFiles.length; i++) {
-            matchingFiles[i].delete();
-        }
+        agentTraceFileWriter.writeExitMethod();
     }
 
     String getConfigFileLocation() throws MalformedURLException, IOException {
