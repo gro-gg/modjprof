@@ -20,19 +20,21 @@ import ch.puzzle.modjprof.config.PropertiesReader;
 
 public class InstrumentationConfiguration {
 
-
     private final static Logger LOGGER = Logger.getLogger(InstrumentationConfiguration.class.getName());
+
     static {
         LOGGER.info("class loaded by " + InstrumentationConfiguration.class.getClassLoader());
     }
 
     /**
-     * eager thread safe singleton
+     * eager thread safe singleton, only visible in this package
      */
     private static final InstrumentationConfiguration INSTANCE = new InstrumentationConfiguration();
+
     private InstrumentationConfiguration() {
     }
-    public static InstrumentationConfiguration getInstance() {
+
+    static InstrumentationConfiguration getInstance() {
         return INSTANCE;
     }
 

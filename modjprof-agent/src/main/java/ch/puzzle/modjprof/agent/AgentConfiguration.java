@@ -21,19 +21,23 @@ import ch.puzzle.modjprof.config.PropertiesReader;
 public class AgentConfiguration {
 
     private final static Logger LOGGER = Logger.getLogger(AgentConfiguration.class.getName());
+
     static {
         LOGGER.info("class loaded by " + AgentConfiguration.class.getClassLoader());
     }
 
     /**
-     * eager thread safe singleton
+     * eager thread safe singleton, only visible in this package
      */
     private static final AgentConfiguration INSTANCE = new AgentConfiguration();
+
     private AgentConfiguration() {
     }
-    public static AgentConfiguration getInstance() {
+
+    static AgentConfiguration getInstance() {
         return INSTANCE;
     }
+
 
     public static final String TRC_FILE_DIR = "/tmp/";
 
