@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>ch.puzzle.modjprof</groupId>
 		<artifactId>modjprof-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 
 	<properties>
