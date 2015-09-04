@@ -1,11 +1,11 @@
 # Modular Java Profiler (modjprof)
 ## Summary
-This is a small, modular java profiler. It consists of diffrent parts that may be used to profile your application.
+This is a small, modular java profiler. It will instrument the methods of your application to calculate the execution time for each method. The profiler consists of diffrent parts that may be used to profile your application.
 
 - **modjprof-agent**: is the Java Agent that instruments your application
 - **modjprof-trc2txt**: is a tool to convert the trace file into a human readable format
 - **modjprof-control**: is an optional Servlet to control the Java Agent (start, stop, ...)
-- **modjprof-filter**: is an optional Servlet Filter to enable the Java Agent for a single request
+- **modjprof-filter**: is an optional Request Filter to enable the Java Agent for a single request
 - _sample-application_: is a sample application, used for the integration tests
 - _sample-servlet_: is a sample servlet, written for testing purposes
 
@@ -113,14 +113,16 @@ Actually there are the following commands implemented:
 
  - **/start**	will start the profiler
  - **/stop**	will stop the profiler
+ - **/list**  will list all stored trace files. Further you can download each file.
+ - **/delete** will delete all stored trace files
 
 The Control Servlet will also print a usage page containing links to the commands.
 
-## Servlet Filter (modjprof-filter)
-The Servlet Filter (modjprof-filter) can be used to enable the profiler for a single browser request, even if the profiler is actually disabled.
+## Request Filter (modjprof-filter)
+The Request Filter (modjprof-filter) can be used to enable the profiler for a single browser request, even if the profiler is actually disabled.
 
 ### Deployment
-Because it is not possible to filter a request in another deployment, you have to add the file ModjprofServletFilter.java to your application. The Servlet Filter is also licensed under the Apache License 2.0 to allow this in proprietary applications.
+Because it is not possible to filter a request in another deployment, you have to add the file ModjprofServletFilter.java to your application. The Request Filter is also licensed under the Apache License 2.0 to allow this in proprietary applications.
 
 ### Usage
  1. Disable profiling by setting `isProfilerEnabled = false` in your agent config file or stop a running profiler with the _Control Servlet (modjprof-control)_.
