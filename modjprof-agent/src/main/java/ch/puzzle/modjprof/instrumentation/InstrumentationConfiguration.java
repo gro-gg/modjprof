@@ -26,7 +26,7 @@ public class InstrumentationConfiguration {
         LOGGER.info("class loaded by " + InstrumentationConfiguration.class.getClassLoader());
     }
 
-    /**
+    /*
      * eager thread safe singleton, only visible in this package
      */
     private static final InstrumentationConfiguration INSTANCE = new InstrumentationConfiguration();

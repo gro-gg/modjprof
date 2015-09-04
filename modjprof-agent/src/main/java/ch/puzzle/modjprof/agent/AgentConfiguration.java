@@ -26,7 +26,7 @@ public class AgentConfiguration {
         LOGGER.info("class loaded by " + AgentConfiguration.class.getClassLoader());
     }
 
-    /**
+    /*
      * eager thread safe singleton, only visible in this package
      */
     private static final AgentConfiguration INSTANCE = new AgentConfiguration();

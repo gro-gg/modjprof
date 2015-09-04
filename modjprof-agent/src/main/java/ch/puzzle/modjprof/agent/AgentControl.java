@@ -14,54 +14,97 @@ package ch.puzzle.modjprof.agent;
 import java.io.File;
 import java.util.logging.Logger;
 
+/**
+ * The class AgentControl can be used to control the java agent at runtime. The
+ * agent can be enabled and disabled for one or all threads. The agent can be
+ * instructed to return a list of all trace files or to delete all trace files.
+ */
 public class AgentControl {
 
     private final static Logger LOGGER = Logger.getLogger(AgentControl.class.getName());
 
-    /**
+    /*
      * lazy thread safe singleton
      */
     private static final class LazyHolder {
         private static final AgentControl INSTANCE = new AgentControl();
     }
+
     private AgentControl() {
     }
+
+    /**
+     * Returns a singleton instance of <tt>AgentControl<tt>
+     *
+     * @return the singleton instance of AgentControl
+     */
     public static AgentControl getInstance() {
         return LazyHolder.INSTANCE;
     }
 
+    /**
+     * Enables the java agent for all threads.
+     */
     public void startAgent() {
         AgentConfiguration.getInstance().enableProfiler();
         LOGGER.info("startAgent() called");
     }
 
+    /**
+     * Disables the java agent for all threads.
+     */
     public void stopAgent() {
         AgentConfiguration.getInstance().disableProfiler();
         LOGGER.info("stopAgent() called");
     }
 
+    /**
+     * Returns an Array of all stored trace files.
+     *
+     * @return Array of {@link File} containing references to all stored trace
+     *         files.
+     */
     public File[] listTraceFiles() {
         LOGGER.info("listTraceFiles() called");
         AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
         return traceFileWriter.findAllTraceFiles();
     }
 
+    /**
+     * Returns the location of the trace files on the server.
+     *
+     * @return {@link String} defining the absolute path to the directory
+     *         containing the trace files.
+     */
     public String getTraceFileLocation() {
         LOGGER.info("getTraceFileLocation() called");
         return AgentConfiguration.getInstance().getTraceFileLocation();
     }
 
+    /**
+     * Deletes all trace files on the server.
+     */
     public void deleteAllTraceFiles() {
         LOGGER.info("deleteAllTraceFiles() called");
         AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
         traceFileWriter.deleteAllTraceFiles();
     }
 
+    /**
+     * Enables the java agent for one threads.
+     *
+     * @param threadId the id of thread
+     */
     public void enableThread(long threadId) {
         AgentConfiguration.getInstance().addThread(threadId);
         LOGGER.info("enableThread(" + threadId + ") called");
     }
 
+    /**
+     * Disables the java agent for one threads.
+     *
+     * @param threadId the id of thread
+     */
     public void disableThread(long threadId) {
         AgentConfiguration.getInstance().removeThread(threadId);
         LOGGER.info("disableThread(" + threadId + ") called");
