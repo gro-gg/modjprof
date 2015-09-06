@@ -11,10 +11,8 @@
  */
 package ch.puzzle.modjprof.control;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.servlet.ServletException;
@@ -76,24 +74,21 @@ public class ControlServlet extends HttpServlet {
     }
 
     private void listFiles(PrintWriter out, String baseURI) {
-        File[] files = (File[]) invokeAgent("listTraceFiles", out);
-        if (files.length == 0) {
+        String trcFileString = (String) invokeAgent("getTraceFileFormatableString", out);
+        long[] threadIds = (long[]) invokeAgent("getAllTraceFileThreadIds", out);
+        if (threadIds.length == 0) {
             out.println("<p>No files found!</p>");
             return;
         }
         out.println("<p>Found the following trace files:</p>");
         out.println("<p><a href=\"" + baseURI + "delete\">delete all !!!</a></p>");
         out.println("<ul>");
-        for (int i = 0; i < files.length; i++) {
-            try {
-                out.println("<li>");
-                String taceFile = files[i].getCanonicalPath();
-                String downloadUrl = baseURI + "downloadfile?file=" + taceFile;
-                out.println("<a href=\"" + downloadUrl + "\"  target=\"_blank\">" + files[i].getName() + "</a>");
-                out.println("</li>");
-            } catch (IOException e) {
-                e.printStackTrace(out);
-            }
+        for (int i = 0; i < threadIds.length; i++) {
+            out.println("<li>");
+            String downloadUrl = baseURI + "downloadfile?threadid=" + threadIds[i];
+            out.println("<a href=\"" + downloadUrl + "\"  target=\"_blank\">" + String.format(trcFileString, threadIds[i])
+                    + "</a>");
+            out.println("</li>");
         }
         out.println("</ul>");
     }
@@ -114,17 +109,7 @@ public class ControlServlet extends HttpServlet {
             Object instance = getInstanceMethod.invoke(null);
             Method agentMethod = c.getMethod(method);
             return agentMethod.invoke(instance);
-        } catch (ClassNotFoundException e) {
-            printError(e, out);
-        } catch (NoSuchMethodException e) {
-            printError(e, out);
-        } catch (SecurityException e) {
-            printError(e, out);
-        } catch (IllegalAccessException e) {
-            printError(e, out);
-        } catch (IllegalArgumentException e) {
-            printError(e, out);
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             printError(e, out);
         }
         return null;

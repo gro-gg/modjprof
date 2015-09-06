@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -38,7 +39,9 @@ public class DownloadServlet extends HttpServlet {
     private static final int BUFFER_SIZE = 4096;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String traceFile = request.getParameter("file");
+        String threadId = request.getParameter("threadid");
+        String fileString = (String) invokeAgent("getTraceFileFormatableString");
+        String traceFile = String.format(fileString, Long.parseLong(threadId));
         LOGGER.info("Download started for " + traceFile);
         InputStream inputStream = null;
         ServletOutputStream outputSteam = response.getOutputStream();
@@ -73,6 +76,18 @@ public class DownloadServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+    }
+
+    private Object invokeAgent(String method) {
+        try {
+            Class<?> c = Class.forName("ch.puzzle.modjprof.agent.AgentControl");
+            Method getInstanceMethod = c.getMethod("getInstance");
+            Object instance = getInstanceMethod.invoke(null);
+            Method agentMethod = c.getMethod(method);
+            return agentMethod.invoke(instance);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     @Override

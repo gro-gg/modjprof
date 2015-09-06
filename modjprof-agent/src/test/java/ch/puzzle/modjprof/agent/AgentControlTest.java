@@ -25,9 +25,9 @@ public class AgentControlTest {
     }
 
     @Test
-    public void shouldInvokeListTraceFilesWithoutException() throws Exception {
+    public void shouldInvokeGetAllTraceFileThreadIdsWithoutException() throws Exception {
         //when
-        invokeAgent("listTraceFiles");
+        invokeAgent("getAllTraceFileThreadIds");
 
         //then
         //no Exception should be thrown

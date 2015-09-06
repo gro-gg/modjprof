@@ -64,27 +64,27 @@ public class AgentControl {
      * @return Array of {@link File} containing references to all stored trace
      *         files.
      */
-    public File[] listTraceFiles() {
+    public long[] getAllTraceFileThreadIds() {
         LOGGER.info("listTraceFiles() called");
         AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
-        return traceFileWriter.findAllTraceFiles();
+        return traceFileWriter.getAllTraceFileThreadIds();
     }
 
     /**
-     * Returns the location of the trace files on the server.
+     * Returns a string representing the trace files on the server. The string
+     * will contain a <tt>%d</tt> which should be replaced with the thread id.
      *
-     * @return {@link String} defining the absolute path to the directory
-     *         containing the trace files.
+     * @return {@link String}
      */
-    public String getTraceFileLocation() {
-        LOGGER.info("getTraceFileLocation() called");
-        return AgentConfiguration.getInstance().getTraceFileLocation();
+    public String getTraceFileFormatableString() {
+        LOGGER.info("getTraceFileFormatableString() called");
+        return AgentConfiguration.getInstance().getTraceFileString();
     }
 
     /**
      * Deletes all trace files on the server.
      */
-    public void deleteAllTraceFiles() {
+    public void deleteAllTraceFile() {
         LOGGER.info("deleteAllTraceFiles() called");
         AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
         traceFileWriter.deleteAllTraceFiles();
