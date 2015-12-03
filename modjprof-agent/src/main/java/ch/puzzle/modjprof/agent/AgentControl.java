@@ -34,7 +34,7 @@ public class AgentControl {
     }
 
     /**
-     * Returns a singleton instance of <tt>AgentControl<tt>
+     * Returns a singleton instance of <tt>AgentControl</tt>
      *
      * @return the singleton instance of AgentControl
      */
