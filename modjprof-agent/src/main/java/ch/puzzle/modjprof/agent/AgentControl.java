@@ -15,9 +15,10 @@ import java.io.File;
 import java.util.logging.Logger;
 
 /**
- * The class AgentControl can be used to control the java agent at runtime. The
- * agent can be enabled and disabled for one or all threads. The agent can be
- * instructed to return a list of all trace files or to delete all trace files.
+ * The class {@link AgentControl} can be used to control the java agent at
+ * runtime. The agent can be enabled and disabled for one or all threads. The
+ * agent can be instructed to return a list of all trace files or to delete all
+ * trace files.
  */
 public class AgentControl {
 
@@ -34,9 +35,9 @@ public class AgentControl {
     }
 
     /**
-     * Returns a singleton instance of <tt>AgentControl</tt>
+     * Returns a singleton instance of {@link AgentControl}
      *
-     * @return the singleton instance of AgentControl
+     * @return the singleton instance of {@link AgentControl}
      */
     public static AgentControl getInstance() {
         return LazyHolder.INSTANCE;
@@ -72,7 +73,8 @@ public class AgentControl {
 
     /**
      * Returns a string representing the trace files on the server. The string
-     * will contain a <tt>%d</tt> which should be replaced with the thread id.
+     * will contain a <code>%d</code> which should be replaced with the thread
+     * id.
      *
      * @return {@link String}
      */

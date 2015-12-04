@@ -20,6 +20,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * This class is responsible to write the trace file for each monitored thread.
+ * The trace file contains an entry for entering and for leaving a method.
+ *
+ */
 public class AgentTraceFileWriter {
 
     protected void deleteAllTraceFiles() {

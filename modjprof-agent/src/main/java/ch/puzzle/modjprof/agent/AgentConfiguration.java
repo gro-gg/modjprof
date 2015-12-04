@@ -18,6 +18,10 @@ import java.util.logging.Logger;
 import ch.puzzle.modjprof.config.AgentProperties;
 import ch.puzzle.modjprof.config.PropertiesReader;
 
+/**
+ * This class includes the runtime configuration of the agent. For example if
+ * the profiler is enabled or disabled globally or for a specific thread.
+ */
 public class AgentConfiguration {
 
     private final static Logger LOGGER = Logger.getLogger(AgentConfiguration.class.getName());
