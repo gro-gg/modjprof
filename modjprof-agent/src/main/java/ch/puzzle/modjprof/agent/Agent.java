@@ -29,7 +29,7 @@ import ch.puzzle.modjprof.config.AgentProperties;
 /**
  * This class is the main class of the java agent containing the premain method.
  * It is responsible to load all other classes of the profiler with the right
- * ClassLoader.
+ *  {@link ClassLoader}.
  */
 public class Agent {
 

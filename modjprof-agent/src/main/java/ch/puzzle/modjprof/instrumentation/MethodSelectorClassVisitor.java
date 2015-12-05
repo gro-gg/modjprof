@@ -16,6 +16,11 @@ import static org.objectweb.asm.Opcodes.ASM5;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
+/**
+ * This class defines which methods of a class should be instrumented. It
+ * creates a {@link InstrumentationMethodVisitor} which will perform the
+ * instrumentation.
+ */
 public class MethodSelectorClassVisitor extends ClassVisitor {
 
     private String className;

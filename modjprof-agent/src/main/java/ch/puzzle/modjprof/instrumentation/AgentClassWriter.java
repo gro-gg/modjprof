@@ -14,6 +14,10 @@ package ch.puzzle.modjprof.instrumentation;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
+/**
+ * This class extends the asm class {@link ClassWriter} with the ability to load
+ * the common super class of two classes with a specific {@link ClassLoader}.
+ */
 public class AgentClassWriter extends ClassWriter {
 
     private ClassLoader classLoader;

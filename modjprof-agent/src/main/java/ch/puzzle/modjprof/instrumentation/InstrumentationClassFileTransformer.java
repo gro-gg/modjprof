@@ -25,6 +25,11 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
+/**
+ * This class is responsible to transform a class before the class is loaded by
+ * the JVM. The {@link InstrumentationClassFileTransformer} determines which
+ * classes should be transformed.
+ */
 public class InstrumentationClassFileTransformer implements ClassFileTransformer {
 
     private static Logger LOGGER = Logger.getLogger(InstrumentationClassFileTransformer.class.getName());

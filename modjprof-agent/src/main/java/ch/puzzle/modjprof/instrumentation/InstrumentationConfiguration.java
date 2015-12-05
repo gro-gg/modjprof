@@ -18,6 +18,10 @@ import java.util.logging.Logger;
 import ch.puzzle.modjprof.config.AgentProperties;
 import ch.puzzle.modjprof.config.PropertiesReader;
 
+/**
+ * This class stores the configuration which classes should be transformed. The
+ * classes can be selected by their packages.
+ */
 public class InstrumentationConfiguration {
 
     private final static Logger LOGGER = Logger.getLogger(InstrumentationConfiguration.class.getName());

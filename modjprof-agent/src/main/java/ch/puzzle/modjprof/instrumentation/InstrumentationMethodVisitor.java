@@ -19,6 +19,11 @@ import static org.objectweb.asm.Opcodes.RETURN;
 
 import org.objectweb.asm.MethodVisitor;
 
+/**
+ * This class performs the instrumentation of each method. It inserts a callback
+ * statement to the agent at the beginning and at the end of each method.
+ *
+ */
 public class InstrumentationMethodVisitor extends MethodVisitor {
 
     private String methodName;
