@@ -20,6 +20,19 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ * This URLClassLoder is responsible to load the agent's instrumentation classes
+ * and the provided version of the instrumentation framework. Because the
+ * framework is loaded with another ClassLoader than the profiled application,
+ * it cannot conflict with another version of that framework used in the
+ * application. It is possible to load more libraries with this ClassLoader.
+ * Therefore the library have to be configured in the the file
+ * <code>classpath.properties</code>.
+ *
+ * Compared to normal ClassLoaders, the {@link AgentClassLoader} will first try
+ * to load a class from his own search path. If the class cannot be found in his
+ * search path it delegates the class loading to his parent ClassLoader.
+ */
 public class AgentClassLoader extends URLClassLoader {
 
     private final static Logger LOGGER = Logger.getLogger(AgentClassLoader.class.getName());
