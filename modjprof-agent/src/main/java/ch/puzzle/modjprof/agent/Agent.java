@@ -54,7 +54,7 @@ public class Agent {
         agentInstance = new Agent(instrumentation);
     }
 
-    protected Agent() {
+    private Agent() {
         agentInstance = this;
     }
 

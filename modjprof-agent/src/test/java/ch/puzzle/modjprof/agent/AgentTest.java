@@ -17,14 +17,16 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,8 +35,14 @@ public class AgentTest {
     private static final String ARGUMENTS = "enable=true\nconfig=/tmp/modjprof.properties";
     private static final String AGENTLOCATION = "/home/user/modjprof/modjprof-agent/target/modjprof-agent.jar";
 
-    @Spy
-    Agent agent = new Agent();
+    private Agent agent;
+
+    @Before
+    public void setUp() throws Exception {
+        Constructor<Agent> constructor = Agent.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        agent = Mockito.spy(constructor.newInstance());
+    }
 
     @Test
     public void shouldGetJavaagentWithArguments() throws Exception {
