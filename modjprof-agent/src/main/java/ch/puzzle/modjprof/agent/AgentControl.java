@@ -67,8 +67,8 @@ public class AgentControl {
      */
     public long[] getAllTraceFileThreadIds() {
         LOGGER.info("listTraceFiles() called");
-        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
-        return traceFileWriter.getAllTraceFileThreadIds();
+        AgentTraceFileManager traceFileManager = new AgentTraceFileManager();
+        return traceFileManager.getAllTraceFileThreadIds();
     }
 
     /**
@@ -88,8 +88,8 @@ public class AgentControl {
      */
     public void deleteAllTraceFile() {
         LOGGER.info("deleteAllTraceFiles() called");
-        AgentTraceFileWriter traceFileWriter = new AgentTraceFileWriter();
-        traceFileWriter.deleteAllTraceFiles();
+        AgentTraceFileManager traceFileManager = new AgentTraceFileManager();
+        traceFileManager.deleteAllTraceFiles();
     }
 
     /**

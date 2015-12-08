@@ -40,6 +40,8 @@ public class Agent {
 
     private static AgentTraceFileWriter agentTraceFileWriter;
 
+    private static AgentTraceFileManager agentTraceFileManager;
+
     private static AgentConfiguration agentConfiguration;
 
     private static final String JAVAAGENT_VM_PREFIX = "-javaagent:";
@@ -50,6 +52,7 @@ public class Agent {
 
     public static void premain(String agentArgs, Instrumentation instrumentation) throws Exception {
         agentTraceFileWriter = new AgentTraceFileWriter();
+        agentTraceFileManager = new AgentTraceFileManager();
         agentConfiguration = AgentConfiguration.getInstance();
         agentInstance = new Agent(instrumentation);
     }
@@ -60,7 +63,7 @@ public class Agent {
 
     private Agent(Instrumentation instrumentation) throws Exception {
         agentConfiguration.initialize(getConfigFileLocation());
-        agentTraceFileWriter.deleteAllTraceFiles();
+        agentTraceFileManager.deleteAllTraceFiles();
 
         URL jarUrl = getJavaagentUrlFromVmArguments();
         agentClassLoader = new AgentClassLoader(jarUrl);
