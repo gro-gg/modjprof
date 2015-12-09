@@ -1,6 +1,8 @@
 package ch.puzzle.modjprof.agent;
 
 import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_DIR;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_EXTENSION;
+import static ch.puzzle.modjprof.agent.AgentConfiguration.TRC_FILE_PREFIX;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,8 +36,7 @@ public class AgentTraceFileManager {
         File[] matchingFiles = (new File(TRC_FILE_DIR)).listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
-                //TODO use TRC_FILE
-                return pathname.getName().startsWith("modjprof_") && pathname.getName().endsWith(".trc");
+                return pathname.getName().startsWith(TRC_FILE_PREFIX) && pathname.getName().endsWith(TRC_FILE_EXTENSION);
             }
         });
         return matchingFiles;

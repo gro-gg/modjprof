@@ -45,7 +45,11 @@ public class AgentConfiguration {
 
     public static final String TRC_FILE_DIR = "/tmp/";
 
-    public static final String TRC_FILE = TRC_FILE_DIR + "modjprof_%d.trc";
+    public static final String TRC_FILE_PREFIX = "modjprof_";
+
+    public static final String TRC_FILE_EXTENSION = ".trc";
+
+    public static final String TRC_FILE = TRC_FILE_DIR + TRC_FILE_PREFIX + "%d" + TRC_FILE_EXTENSION;
 
     public static final String CLASS_FILE_TRANSFORMER_CLASS = "ch.puzzle.modjprof.instrumentation.InstrumentationClassFileTransformer";
 
