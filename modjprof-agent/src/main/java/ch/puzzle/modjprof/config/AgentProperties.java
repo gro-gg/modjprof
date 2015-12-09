@@ -20,12 +20,14 @@ import java.util.Set;
 
 public class AgentProperties extends Properties {
 
+    private static final String PROPERTY_DELIMITER = ",";
+
     private static final long serialVersionUID = 4663434891809094508L;
 
     public Set<String> getPropertyAsSet(String key) {
         String property = getProperty(key);
         if (property != null) {
-            String[] split = property.split(",");
+            String[] split = property.split(PROPERTY_DELIMITER);
             return new HashSet<String>(Arrays.asList(split));
         }
         return new HashSet<String>();
