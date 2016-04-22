@@ -46,8 +46,9 @@ If no properties file is configured, the file `modjprof.properties` should be in
         JAVA_OPTS="$JAVA_OPTS -javaagent:/tmp/modjprof-agent.jar"
         JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:/tmp/modjprof-agent.jar"
         # configure logging
+        # Note: You may need to modify the exact path to the logmanager jar file!
         JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
-        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-2.0.0.Final.jar"
+        JAVA_OPTS="$JAVA_OPTS -Xbootclasspath/p:${JBOSS_HOME}/modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-2.0.0.Final.jar"
         # add agent and logmanager to JBOSS_MODULES_SYSTEM_PKGS
         pkgs="ch.puzzle.modjprof.agent,org.jboss.logmanager"
         if [ "x$JBOSS_MODULES_SYSTEM_PKGS" != "x" ]; then
