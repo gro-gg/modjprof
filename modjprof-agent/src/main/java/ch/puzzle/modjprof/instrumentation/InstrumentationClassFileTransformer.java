@@ -62,11 +62,11 @@ public class InstrumentationClassFileTransformer implements ClassFileTransformer
                     } catch (Throwable e) {
                         e.printStackTrace();
                     }
-                    return classfileBuffer;
+                    return null;
                 }
             }
         }
-        return classfileBuffer;
+        return null;
     }
 
 }
